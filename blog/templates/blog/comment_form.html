@@ -1,0 +1,24 @@
+{% extends "blog/custom_site.html" %}
+{% load static %}
+{% load blogfilter %}
+{% block meta_des %}{{post.title}} - {{ mysite.title }}{% endblock %}
+{% block title %}{{post.title}} - {{ mysite.title }}{% endblock %}
+
+
+{% block content %}
+<form action="" method="POST" enctype='multipart/form-data'>
+  {% for field in form %}
+    <div class="form-group">
+      {{ field.errors }}
+      <label for="{{ field.id_for_label }}">
+        {{ field.label }}
+      </label>
+      {{ field }}
+    </div>
+  {% endfor %}
+  {% csrf_token %}
+  <input class="btn btn-primary" type="submit" value="コメントする">
+  <a class="btn btn-primary" href="{% url 'blog:detail' post_pk %}" rel="nofollow">戻る</a>
+</form>
+
+{% endblock %}

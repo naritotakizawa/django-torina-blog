@@ -1,0 +1,37 @@
+body {
+	background-color: #fff;
+	padding-top: 6rem;
+}
+
+div.jumbotron {
+	background-color: #fff;
+	border-bottom: .05rem solid #eee;
+}
+
+.icon {
+	width: 64px;
+	height: 64px;
+}
+
+
+.midasi1 {
+    border-left: 10px solid rgb(197,219,238);
+    border-bottom: 1px solid rgb(197,219,238);
+    margin-top: 26px;
+    padding-left: 7px;
+    padding-bottom: 4px;
+}
+
+footer {
+ 	padding-top: 3rem;
+ 	padding-bottom: 3rem;
+}
+
+footer p {
+	margin-bottom: .25rem;
+}
+
+footer a {
+	color: blue;
+	text-decoration: underline;
+}

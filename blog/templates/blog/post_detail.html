@@ -1,0 +1,91 @@
+{% extends "blog/custom_site.html" %}
+{% load static %}
+{% load blogfilter %}
+{% block meta_des %}{{post.title}} - {{ mysite.title }}{% endblock %}
+{% block title %}{{post.title}} - {{ mysite.title }}{% endblock %}
+{% block extrajs %}
+   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="card card-outline-primary">
+  <div class="card-header bg-primary">
+    <h1 class="card-title text-white">{{ post.title }}</h1>
+  </div>
+
+  <div class="card-block">
+    <span class="badge badge-primary">
+      <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
+    </span>
+    {% for tag in post.tag.all %}
+      <span class="badge badge-success">
+        <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
+      </span>
+    {% endfor %}
+    
+      <span class="badge badge-primary badge-pill">{% by_the_time post.created_at %}</span>
+      <br>
+      <span class="text-muted">{{ post.created_at }}</span>
+
+    {% if user.is_authenticated %}
+      <p>
+        <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
+      </p>
+    {% endif %}
+    <hr>
+    
+    {% if post.is_html %}
+      {{ post.text | safe}}
+    {% else %}
+      {{ post.text | linebreaksbr | blog }}
+    {% endif %}
+  </div>
+
+  <div class="card-footer">
+    {% if post.get_prev %} 
+    <p>前の記事
+    <a href="{% url 'blog:detail' post.get_prev.pk %}">{{ post.get_prev.title }}</a>
+    </p>
+    {% endif %}
+
+    {% if post.get_next %} 
+    <p>次の記事
+    <a href="{% url 'blog:detail' post.get_next.pk %}">{{ post.get_next.title }}</a>
+    </p>
+    {% endif %}
+
+    <p>関連記事</p>
+    {% for post in post.friend_posts.all %}
+      {% if post.is_publick %}
+          <p><a href="{% url 'blog:detail' post.pk %}">{{ post.title }}</a></p>
+      {% endif %}
+    {% endfor %}  
+  </div>
+</div>
+
+<div id="comment-area">
+{% for comment in post.comment_set.all %}
+<div class="media m-3">
+  {% if comment.icon %}
+    <img class="d-flex mr-3 icon" src="{{ comment.icon.url }}">
+  {% else %}
+    <img class="d-flex mr-3 icon" src="{% static 'blog/img/noimage.png' %}">
+  {% endif %}
+  <div class="media-body">
+    <h5 class="mt-0">
+      <span class="badge badge-primary badge-pill">{% by_the_time comment.created_at %}</span>
+      {{ comment.name }}
+      <span class="lead text-muted">{{ comment.created_at }}</span>
+    </h5>
+    {{ comment.text | linebreaksbr }}
+  </div>
+</div>
+{% endfor %}
+</div>
+
+<div class="text-center my-5">
+  <a class="btn btn-primary btn-lg" href="{% url 'blog:comment' post.pk %}" rel="nofollow">コメントページへ</a>
+</div>
+
+{% endblock %}
