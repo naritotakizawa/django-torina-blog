@@ -15,7 +15,8 @@ class LatestEntriesFeed(Feed):
     description = mysite.description or ''
 
     def items(self):
-        return Post.objects.order_by('-created_at')[:5]
+        return Post.objects.filter(
+            is_publick=True).order_by('-created_at')[:10]
 
     def item_title(self, item):
         return item.title
