@@ -10,7 +10,7 @@ Quick start
 -----------
 1. インストールする::
 
-    pip install あとでアップする
+    pip install -U git+https://github.com/naritotakizawa/django-torina-blog
 
 2. settings.pyのINSTALLED_APPSに足す::
 
@@ -20,6 +20,8 @@ Quick start
         'django.contrib.sites',
         'django.contrib.sitemaps',
     ]
+    
+    SITE_ID = 1  # sitesフレームワークを利用する場合に必要な記述
 
 3. settings.pyのcontext_processorsに'blog.context_processors.common'を足す::
 
