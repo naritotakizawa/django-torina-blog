@@ -2,11 +2,35 @@
 {% load static %}
 {% load blogfilter %}
 {% block meta_des %}{{ mysite.description }}{% endblock %}
-{% block title %}{{ mysite.title }}{% endblock %}
+
+{% block title %}
+    {% if tag %}
+        {{ tag.name }} | {{ mysite.title }}
+    {% elif category %}
+        {{ category.name }} | {{ mysite.title }}
+    {% else %}
+        {{ mysite.title }}
+    {% endif %}
+{% endblock %}
+
 {% block nav_home %}active{% endblock %}
 
-
 {% block content %}
+
+{% if tag %}
+<div class="alert alert-success" role="alert">
+  <h1 class="alert-heading">{{ tag.name }}</h1>
+  {{ tag.description | linebreaksbr | blog }}
+</div>
+{% endif %}
+
+{% if category %}
+<div class="alert alert-success" role="alert">
+  <h1 class="alert-heading">{{ category.name }}</h1>
+  {{ category.description | linebreaksbr | blog }}
+</div>
+{% endif %}
+
   {% for post in post_list %}
     <div class="mb-5 card card-outline-primary">
       <div class="card-header bg-primary">
