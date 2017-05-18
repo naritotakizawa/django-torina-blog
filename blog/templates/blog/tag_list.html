@@ -1,0 +1,21 @@
+{% extends "blog/custom_site.html" %}
+{% load static %}
+{% load blogfilter %}
+{% block meta_des %}{{ mysite.description }}のタグ一覧ページです。{% endblock %}
+{% block title %}タグ一覧 | {{ mysite.title }}{% endblock %}
+{% block nav_tag_list %}active{% endblock %}
+
+{% block content %}
+  {% for tag in tag_list %}
+    <p>
+        <a href="{% url 'blog:tag' tag.name %}">
+            {{ tag.name }}({{ tag.num_posts }})
+        </a>
+    </p>
+    <p>{{ tag.description }}</p>
+    <hr>
+  {% endfor %}
+
+  {% include "blog/page.html" %}
+
+{% endblock %}

@@ -11,7 +11,7 @@ class PostSitemap(Sitemap):
         return Post.objects.filter(is_publick=True)
 
     def lastmod(self, obj):
-        return obj.updated_at
+        return obj.created_at
 
     def location(self, obj):
         return reverse_lazy('blog:detail', kwargs={'pk': obj.pk})

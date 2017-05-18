@@ -1,11 +1,11 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Category(models.Model):
     """カテゴリー"""
 
-    name = models.CharField("カテゴリ名", max_length=255)
-    created_at = models.DateTimeField("作成日", auto_now_add=True)
+    name = models.CharField('カテゴリ名', max_length=255)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -14,8 +14,9 @@ class Category(models.Model):
 class Tag(models.Model):
     """タグ"""
 
-    name = models.CharField("タグ名", max_length=255)
-    created_at = models.DateTimeField("作成日", auto_now_add=True)
+    name = models.CharField('タグ名', max_length=255)
+    description = models.TextField('概要', blank=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -34,8 +35,7 @@ class Post(models.Model):
     is_publick = models.BooleanField('公開可能か?', default=True)
     friend_posts = models.ManyToManyField(
         'self', verbose_name='関連記事', blank=True)
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
-    updated_at = models.DateTimeField('更新日', auto_now=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -62,7 +62,7 @@ class Comment(models.Model):
         'サムネイル', upload_to='com_icon/', blank=True, null=True)
     target = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name='対象記事')
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.text[:10]
@@ -73,7 +73,7 @@ class Link(models.Model):
 
     name = models.CharField('リンク名', max_length=255)
     adrs = models.CharField('アドレス', max_length=255)
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -84,7 +84,7 @@ class Analytics(models.Model):
 
     name = models.CharField('アナリティクス', max_length=255, blank=True)
     html = models.TextField('アナリティクスHTML', blank=True)
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -95,7 +95,7 @@ class Ads(models.Model):
 
     name = models.CharField('広告名', max_length=255, blank=True)
     html = models.TextField('広告HTML', blank=True)
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -108,7 +108,7 @@ class SiteDetail(models.Model):
     description = models.CharField('サイトの説明', max_length=255, blank=True)
     author = models.CharField('管理者', max_length=255, blank=True)
     author_mail = models.EmailField('管理者アドレス', max_length=255, blank=True)
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.author

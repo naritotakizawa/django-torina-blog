@@ -1,3 +1,4 @@
+from django.db.models import Count
 from .forms import PostSerachForm
 from .models import Category, Tag, Link, Analytics, Ads, SiteDetail, Comment
 
@@ -11,7 +12,10 @@ def common(request):
 
     context = {
         'categories': Category.objects.all(),
-        'tags': Tag.objects.all(),
+        # 紐付いているポストの数が多い順に10個
+        # tag.num_posts で数を表示できる
+        'tags': Tag.objects.annotate(
+            num_posts=Count('post')).order_by('-num_posts')[:10],
         'links': Link.objects.all(),
         'analytics': Analytics.objects.all(),
         'ads': Ads.objects.all(),
