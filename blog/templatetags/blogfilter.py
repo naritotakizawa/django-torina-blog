@@ -1,9 +1,12 @@
-"""blogアプリで主に使用するフィルタ"""
+"""blogアプリで主に使用するフィルタ."""
 import html.parser
-from django.utils import timezone
+import re
+
 from django import template
 from django.template.defaultfilters import urlize
-import re
+from django.utils import timezone
+from django.utils.html import escape
+from django.utils.safestring import mark_safe, SafeData
 
 
 register = template.Library()
@@ -11,8 +14,12 @@ html_parser = html.parser.HTMLParser()
 
 
 def url(text):
-    """[filter url]http://...[end]を、aタグして解釈する"""
+    """[filter url]http://...[end]を、aタグして解釈する.
 
+    >>> url('[filter url]https://torina.top[end]')
+    '<a target="_blank" rel="nofollow" href="https://torina.top" rel="nofollow">https://torina.top</a>'
+
+    """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter url]', '').replace('[end]', '')
     tag = urlize(text)
@@ -21,8 +28,12 @@ def url(text):
 
 
 def html(text):
-    """[filter html]your_html[end]を、そのままHTMLとして解釈する"""
+    """[filter html]your_html[end]を、そのままHTMLとして解釈する.
 
+    >>> html('[filter html]&lt;h1&gt;ヘロー&lt;/h1&gt;[end]')
+    '<h1>ヘロー</h1>'
+
+    """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter html]', '').replace('[end]', '')
     tag = html_parser.unescape(text)
@@ -30,25 +41,34 @@ def html(text):
 
 
 def img(text):
-    """http://spam.png等の画像URLを、imgタグに置換する
+    """http://spam.png等の画像URLを、imgタグに置換する.
 
     Bootstrap4に合わせたタグです
-    """
 
+    >>> img('[filter img]https://torina.top/a.png[end]')
+    '<a href="https://torina.top/a.png" target="_blank" rel="nofollow"><img src="https://torina.top/a.png" class="img-fluid"/></a>'
+
+    """
     patterns = [r"http.*?jpg", r"http.*?png", r"http.*?jpeg", r"http.*?gif"]
     for ptn in patterns:
         href = re.search(ptn, text)
         if href:
-            return '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" class="img-fluid"/></a>'.format(href.group())
+            return (
+                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+                'class="img-fluid"/></a>'
+            ).format(href.group())
     return text
 
 
 def cord(text):
-    """<pre>コード</pre>に置き換える
+    """<pre>コード</pre>に置き換える.
 
     google-code-prettyfyに合わせたタグです
-    """
 
+    >>> cord('[filter cord]hello<br />narito[end]')
+    '<pre class="prettyprint linenums">hello\\nnarito</pre>'
+
+    """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter cord]', '').replace('[end]', '')
     tag = '<pre class="prettyprint linenums">{}</pre>'.format(text)
@@ -56,11 +76,14 @@ def cord(text):
 
 
 def quote(text):
-    """<blockquote>文字</blockquote>に置き換える
+    """<blockquote>文字</blockquote>に置き換える.
 
     Bootstrap4にあわせたタグです
-    """
 
+    >>> quote('[filter quote]narito[end]')
+    '<blockquote class="blockquote"><p>narito</p></blockquote>'
+
+    """
     text = text.replace('[filter quote]', '').replace('[end]', '')
     tag = '<blockquote class="blockquote"><p>{}</p></blockquote>'.format(
         text)
@@ -68,15 +91,15 @@ def quote(text):
 
 
 def midasi1(text):
-    """<span class="midasi1">文字</span>に置き換える
+    """<span class="midasi1">文字</span>に置き換える.
 
-    .midasi1 {
-        border-left: 10px solid rgb(197,219,238);
-        border-bottom: 1px solid rgb(197,219,238);
-        margin-top: 26px;
-        padding-left: 7px;
-        padding-bottom: 4px;
-    }
+    .midasi1 {     border-left: 10px solid rgb(197,219,238);     border-
+    bottom: 1px solid rgb(197,219,238);     margin-top: 26px;
+    padding-left: 7px;     padding-bottom: 4px; }
+
+    >>> midasi1('[filter midasi1]H1 String[end]')
+    '<p class="midasi1">H1 String</p>'
+
     """
     text = text.replace('[filter midasi1]', '').replace('[end]', '')
     tag = '<p class="midasi1">{0}</p>'.format(text)
@@ -85,8 +108,18 @@ def midasi1(text):
 
 @register.filter(is_safe=True, needs_autoescape=True)
 def blog(value, autoescape=True):
-    """[spam]ham[end]のような文字列を、適切なHTMLタグに変換する"""
+    """[spam]ham[end]のような文字列を、適切なHTMLタグに変換する.
 
+    >>> blog('[filter html]<h1>Hello</h1>[end]')
+    '<h1>Hello</h1>'
+
+    >>> blog('[filter html]<h1>Hello</h1>[end][filter url]https://torina.top[end]')
+    '<h1>Hello</h1><a target="_blank" rel="nofollow" href="https://torina.top" rel="nofollow">https://torina.top</a>'
+
+    """
+    autoescape = autoescape and not isinstance(value, SafeData)
+    if autoescape:
+        value = escape(value)
     filters = re.finditer(r'\[filter (?P<tag_name>.*?)\].*?\[end\]', value)
     results = []
     for f in filters:
@@ -103,13 +136,12 @@ def blog(value, autoescape=True):
         if origin_text != result_text:
             value = value.replace(origin_text, result_text)
 
-    return value
+    return mark_safe(value)
 
 
 @register.simple_tag
 def url_replace(request, field, value):
-    """GETパラメータを一部を置き換える"""
-
+    """GETパラメータを一部を置き換える."""
     url_dict = request.GET.copy()
     url_dict[field] = value
     return url_dict.urlencode()
@@ -117,8 +149,12 @@ def url_replace(request, field, value):
 
 @register.simple_tag
 def hilight(text, key_word):
-    """ハイライトした文章を返す"""
+    """ハイライトした文章を返す.
 
+    >>> hilight('oh my oh', 'oh')
+    '<span class="under-line">oh</span> my <span class="under-line">oh</span>'
+
+    """
     result = text
     case = (key_word, key_word.title(), key_word.capitalize())
     for word in case:
@@ -130,8 +166,7 @@ def hilight(text, key_word):
 
 @register.simple_tag
 def by_the_time(dt):
-    """その時間が今からどのぐらい前か、人にやさしい表現で返す"""
-
+    """その時間が今からどのぐらい前か、人にやさしい表現で返す."""
     result = timezone.now() - dt
     s = result.total_seconds()
     hours = int(s / 3600)
@@ -143,8 +178,3 @@ def by_the_time(dt):
         return '約{0}分前'.format(minute)
     else:
         return '約{0}時間前'.format(hours)
-
-
-@register.filter(is_safe=True)
-def url_target_blank(text):
-    return text.replace('<a ', '<a target="_blank" rel="nofollow" ')
