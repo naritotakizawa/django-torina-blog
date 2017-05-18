@@ -7,7 +7,7 @@ from django.http import HttpResponsePermanentRedirect, Http404
 from django.shortcuts import redirect
 from django.views import generic
 from .forms import PostSerachForm, CommentCreateForm
-from .models import Post, Comment, Tag
+from .models import Post, Comment, Tag, Category
 
 
 class BaseListView(generic.ListView):
@@ -55,18 +55,30 @@ class CategoryView(BaseListView):
     """カテゴリのリンククリック"""
 
     def get_queryset(self):
-        category = self.kwargs['category']
-        queryset = super().get_queryset().filter(category__name=category)
+        category_name = self.kwargs['category']
+        self.category = Category.objects.get(name=category_name)
+        queryset = super().get_queryset().filter(category=self.category)
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['category'] = self.category
+        return context
 
 
 class TagView(BaseListView):
     """タグのリンククリック"""
 
     def get_queryset(self):
-        tag = self.kwargs['tag']
-        queryset = super().get_queryset().filter(tag__name=tag)
+        tag_name = self.kwargs['tag']
+        self.tag = Tag.objects.get(name=tag_name)
+        queryset = super().get_queryset().filter(tag=self.tag)
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['tag'] = self.tag
+        return context
 
 
 class PostDetailView(generic.DetailView):

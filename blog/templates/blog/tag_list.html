@@ -12,7 +12,7 @@
             {{ tag.name }}({{ tag.num_posts }})
         </a>
     </p>
-    <p>{{ tag.description }}</p>
+    <p>{{ tag.description | linebreaksbr | blog }}</p>
     <hr>
   {% endfor %}
 
