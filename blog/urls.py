@@ -18,6 +18,8 @@ urlpatterns = [
     url(r'^$', views.PostIndexView.as_view(), name='index'),
 
     url(r'^ping/$', views.ping, name='ping'),
+    
+    url(r'^alltag/$', views.TagListView.as_view(), name='tag_list'),
 
     url(r'^detail/(?P<pk>[0-9]+)/$',
         views.PostDetailView.as_view(), name='detail'),
@@ -36,7 +38,4 @@ urlpatterns = [
     url(r'^latest/feed/$', LatestEntriesFeed(), name='feed'),
     url(r'^sitemap\.xml$', sitemap, {
         'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-
-    url(r'^main/(?P<pk>[0-9]+)/$',
-        views.redirect_main, name='main'),
 ]

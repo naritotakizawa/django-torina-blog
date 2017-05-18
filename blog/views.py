@@ -2,12 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sitemaps import ping_google
 from django.core.urlresolvers import reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponsePermanentRedirect, Http404
 from django.shortcuts import redirect
 from django.views import generic
 from .forms import PostSerachForm, CommentCreateForm
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 
 
 class BaseListView(generic.ListView):
@@ -105,6 +105,14 @@ class CommentCreateView(generic.CreateView):
         return redirect('blog:detail', pk=post_pk)
 
 
+class TagListView(generic.ListView):
+    """タグの一覧ビュー"""
+
+    model = Tag
+    queryset = Tag.objects.annotate(
+        num_posts=Count('post')).order_by('-num_posts')
+
+
 @login_required
 def ping(request):
     """Googleへpingを送信する"""
@@ -116,9 +124,3 @@ def ping(request):
         raise
     else:
         return redirect('blog:index', permanent=True)
-
-
-def redirect_main(request, pk):
-    """旧URLである/mainの、/detailへのリダイレクト。後々消す"""
-
-    return redirect('blog:detail', permanent=True, pk=pk)

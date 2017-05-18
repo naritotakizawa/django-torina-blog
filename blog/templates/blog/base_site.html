@@ -19,6 +19,12 @@
         <li class="nav-item {% block nav_home %}{% endblock %}">
           <a class="nav-link" href="{% url 'blog:index' %}">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {% block nav_tag_list %}{% endblock %}" href="{% url 'blog:tag_list' %}">All Tag</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" target="_blank" href="{% url 'blog:feed' %}" rel="nofollow">Feed</a>
+        </li>
         {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'blog:private' %}" rel="nofollow">Private</a>
@@ -30,9 +36,6 @@
             <a class="nav-link" href="{% url 'blog:ping' %}" rel="nofollow">Ping</a>
           </li>
         {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" target="_blank" href="{% url 'blog:feed' %}" rel="nofollow">Feed</a>
-        </li>
       </ul>
       <form action="{% url 'blog:index' %}" method="GET" class="form-inline float-right">
         {{ global_form.keyword }}
@@ -77,11 +80,14 @@
         <a href="#" class="list-group-item active">
           Tag
         </a>
-        <div class="list-group-item">
-          {% for tag in tags  %}
-           <a href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>,
-          {% endfor %}
-        </div>
+        {% for tag in tags  %}
+        <a class="list-group-item" href="{% url 'blog:tag' tag.name %}">
+            {{ tag.name }}({{ tag.num_posts }})
+        </a>
+        {% endfor %}
+        <a href="{% url 'blog:tag_list' %}" class="list-group-item">
+          >>> 全てのタグを見る
+        </a>
       </div>
 
       <div class="list-group my-5">

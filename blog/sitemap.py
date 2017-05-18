@@ -11,7 +11,7 @@ class PostSitemap(Sitemap):
         return Post.objects.filter(is_publick=True)
 
     def lastmod(self, obj):
-        return obj.updated_at
+        return obj.created_at
 
     def location(self, obj):
         return reverse_lazy('blog:detail', kwargs={'pk': obj.pk})
@@ -50,7 +50,7 @@ class StaticSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return ['blog:index']
+        return ['blog:index', 'blog:tag_list']
 
     def location(self, obj):
         return reverse_lazy(obj)
