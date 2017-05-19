@@ -1,6 +1,8 @@
 ==================
 django-torina-blog
 ==================
+.. image:: https://travis-ci.org/naritotakizawa/django-torina-blog.svg?branch=master
+    :target: https://travis-ci.org/naritotakizawa/django-torina-blog
 
 ブログ用のDjangoアプリケーションです。
 https://torina.top/

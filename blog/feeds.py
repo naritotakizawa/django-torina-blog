@@ -4,15 +4,18 @@ from django.urls import reverse
 from .models import Post, SiteDetail
 
 try:
-    mysite = SiteDetail.objects.latest('pk')
+    site_detail = SiteDetail.objects.latest('pk')
 except SiteDetail.DoesNotExist:
-    mysite = None
-
+    title = ''
+    description = ''
+else:
+    title = site.title
+    description = site.description    
 
 class LatestEntriesFeed(Feed):
-    title = mysite.title or ''
+    title = title
     link = '/'
-    description = mysite.description or ''
+    description = description
 
     def items(self):
         return Post.objects.filter(
