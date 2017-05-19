@@ -4,4 +4,3 @@ include requirements.txt
 recursive-include blog/static *
 recursive-include blog/templates *
 recursive-include docs *
-prune project
