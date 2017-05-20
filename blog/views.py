@@ -22,7 +22,7 @@ class BaseListView(generic.ListView):
 
 
 class PostIndexView(BaseListView):
-    """トップページ、クイックサーチ"""
+    """トップページ、クイックサーチ."""
 
     def get_queryset(self):
 
@@ -41,7 +41,7 @@ class PostIndexView(BaseListView):
 
 
 class PostPrivateIndexView(LoginRequiredMixin, BaseListView):
-    """非公開の記事一覧"""
+    """非公開の記事一覧."""
 
     def get_queryset(self):
 
@@ -52,7 +52,7 @@ class PostPrivateIndexView(LoginRequiredMixin, BaseListView):
 
 
 class CategoryView(BaseListView):
-    """カテゴリのリンククリック"""
+    """カテゴリのリンククリック."""
 
     def get_queryset(self):
         category_name = self.kwargs['category']
@@ -67,7 +67,7 @@ class CategoryView(BaseListView):
 
 
 class TagView(BaseListView):
-    """タグのリンククリック"""
+    """タグのリンククリック."""
 
     def get_queryset(self):
         tag_name = self.kwargs['tag']
@@ -82,23 +82,26 @@ class TagView(BaseListView):
 
 
 class PostDetailView(generic.DetailView):
-    """記事詳細ページ"""
+    """記事詳細ページ."""
 
     model = Post
+
     def get_object(self, queryset=None):
         post = super().get_object()
-        
-        # その記事が公開か、ユーザがログインしていればよし 
+
+        # その記事が公開か、ユーザがログインしていればよし
         if post.is_publick or self.request.user.is_authenticated():
             return post
         else:
             raise Http404
 
+
 class CommentCreateView(generic.CreateView):
-    """コメント投稿画面
+    """コメント投稿画面.
 
     '^comment/(?P<pk>[0-9]+)/$'のようにして、記事のpkも受け取っている
     このpkをcontextへ渡し前へ戻るリンクに利用したり、targetに指定する記事を取得するのに使う
+
     """
 
     model = Comment
@@ -118,7 +121,7 @@ class CommentCreateView(generic.CreateView):
 
 
 class TagListView(generic.ListView):
-    """タグの一覧ビュー"""
+    """タグの一覧ビュー."""
 
     model = Tag
     queryset = Tag.objects.annotate(
@@ -127,7 +130,7 @@ class TagListView(generic.ListView):
 
 @login_required
 def ping(request):
-    """Googleへpingを送信する"""
+    """Googleへpingを送信する."""
 
     try:
         url = reverse_lazy('blog:django.contrib.sitemaps.views.sitemap')

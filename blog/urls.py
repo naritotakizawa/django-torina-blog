@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^$', views.PostIndexView.as_view(), name='index'),
 
     url(r'^ping/$', views.ping, name='ping'),
-    
+
     url(r'^alltag/$', views.TagListView.as_view(), name='tag_list'),
 
     url(r'^detail/(?P<pk>[0-9]+)/$',

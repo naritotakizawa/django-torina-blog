@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
+
 class Category(models.Model):
-    """カテゴリー"""
+    """カテゴリー."""
 
     name = models.CharField('カテゴリ名', max_length=255)
     description = models.TextField('概要', blank=True)
@@ -13,7 +14,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    """タグ"""
+    """タグ."""
 
     name = models.CharField('タグ名', max_length=255)
     description = models.TextField('概要', blank=True)
@@ -24,7 +25,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    """ブログのポスト"""
+    """ブログのポスト."""
 
     title = models.CharField('タイトル', max_length=255)
     text = models.TextField('本文')
@@ -48,14 +49,15 @@ class Post(models.Model):
         return None
 
     def get_prev(self):
-        prev_post = Post.objects.filter(is_publick=True, pk__lt=self.pk).order_by('-pk')
+        prev_post = Post.objects.filter(
+            is_publick=True, pk__lt=self.pk).order_by('-pk')
         if prev_post:
             return prev_post.first()
         return None
 
 
 class Comment(models.Model):
-    """コメント"""
+    """コメント."""
 
     name = models.CharField('名前', max_length=255, default='名無し')
     text = models.TextField('コメント')
@@ -70,7 +72,7 @@ class Comment(models.Model):
 
 
 class Link(models.Model):
-    """リンク"""
+    """リンク."""
 
     name = models.CharField('リンク名', max_length=255)
     adrs = models.CharField('アドレス', max_length=255)
@@ -92,7 +94,7 @@ class Analytics(models.Model):
 
 
 class Ads(models.Model):
-    """広告関連"""
+    """広告関連."""
 
     name = models.CharField('広告名', max_length=255, blank=True)
     html = models.TextField('広告HTML', blank=True)
@@ -103,7 +105,7 @@ class Ads(models.Model):
 
 
 class SiteDetail(models.Model):
-    """サイトの詳細"""
+    """サイトの詳細."""
 
     title = models.CharField('タイトル', max_length=255, blank=True)
     description = models.CharField('サイトの説明', max_length=255, blank=True)
