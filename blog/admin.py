@@ -6,7 +6,7 @@ from .models import (
 
 
 class OneDataAdmin(admin.ModelAdmin):
-    """DBに1つだけデータを格納したいモデルは、これを使う"""
+    """DBに1つだけデータを格納したいモデルは、これを使う."""
 
     def has_add_permission(self, request):
         return False if self.model.objects.count() > 0 else True

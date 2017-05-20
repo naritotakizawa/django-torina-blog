@@ -10,7 +10,8 @@ except:
     description = ''
 else:
     title = site_detail.title
-    description = site_detail.description    
+    description = site_detail.description
+
 
 class LatestEntriesFeed(Feed):
     title = title
@@ -25,9 +26,9 @@ class LatestEntriesFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        message = "カテゴリ:{0} タグ:{1}"
+        message = 'カテゴリ:{0} タグ:{1}'
         category = item.category
-        tags = " ".join(tag.name for tag in item.tag.all())
+        tags = ' '.join(tag.name for tag in item.tag.all())
         message = message.format(category, tags)
         return message
 
