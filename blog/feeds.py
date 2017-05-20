@@ -5,12 +5,12 @@ from .models import Post, SiteDetail
 
 try:
     site_detail = SiteDetail.objects.latest('pk')
-except SiteDetail.DoesNotExist:
+except:
     title = ''
     description = ''
 else:
-    title = site.title
-    description = site.description    
+    title = site_detail.title
+    description = site_detail.description    
 
 class LatestEntriesFeed(Feed):
     title = title
