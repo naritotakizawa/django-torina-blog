@@ -8,6 +8,14 @@ django-torina-blog
 https://torina.top/
 
 
+
+対応バージョン
+--------------
+
+:Python: 3.3以上
+:Django: 1.10以上
+
+
 Quick start
 -----------
 1. インストールする::

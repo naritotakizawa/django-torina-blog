@@ -2,3 +2,5 @@
 *.pyo
 __pycache__
 db.sqlite3
+dist/
+django_torina_blog.egg-info/
