@@ -9,7 +9,7 @@ https://torina.top/
 
 
 
-対応バージョン
+Requirement
 --------------
 
 :Python: 3.4以上
