@@ -12,8 +12,8 @@ https://torina.top/
 対応バージョン
 --------------
 
-:Python: 3.3以上
-:Django: 1.10以上
+:Python 3.4以上
+:Django 1.10以上
 
 
 Quick start
