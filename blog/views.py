@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sitemaps import ping_google
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.db.models import Q, Count
 from django.http import HttpResponsePermanentRedirect, Http404
 from django.shortcuts import redirect
