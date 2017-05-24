@@ -6,6 +6,9 @@ from .sitemap import (
     PostSitemap, TagSitemap,
     CategorySitemap, StaticSitemap
 )
+
+app_name = 'blog'
+
 sitemaps = {
     'post': PostSitemap,
     'category': CategorySitemap,
