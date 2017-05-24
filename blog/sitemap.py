@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from .models import Post, Category, Tag
 
 
@@ -8,7 +8,7 @@ class PostSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return Post.objects.filter(is_publick=True)
+        return Post.objects.filter(is_publick=True).order_by('-created_at')
 
     def lastmod(self, obj):
         return obj.created_at
@@ -22,7 +22,7 @@ class CategorySitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return Category.objects.all()
+        return Category.objects.all().order_by('-created_at')
 
     def lastmod(self, obj):
         return obj.created_at
@@ -36,7 +36,7 @@ class TagSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return Tag.objects.all()
+        return Tag.objects.all().order_by('-created_at')
 
     def lastmod(self, obj):
         return obj.created_at
