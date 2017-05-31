@@ -7,6 +7,7 @@ python:
 
 install:
     - pip install django
+    - pip install pillow
 
 script:
     - python -Wall manage.py test
