@@ -4,6 +4,9 @@ django-torina-blog
 .. image:: https://travis-ci.org/naritotakizawa/django-torina-blog.svg?branch=master
     :target: https://travis-ci.org/naritotakizawa/django-torina-blog
 
+.. image:: https://coveralls.io/repos/github/naritotakizawa/django-torina-blog/badge.svg
+    :target: https://coveralls.io/github/naritotakizawa/django-torina-blog
+
 ブログ用のDjangoアプリケーションです。
 
 https://torina.top/
@@ -21,7 +24,7 @@ Quick start
 -----------
 1. インストールする::
 
-    pip install -U git+https://github.com/naritotakizawa/django-torina-blog
+    pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/master.tar.gz
 
 2. settings.pyのINSTALLED_APPSに足す::
 
