@@ -1,13 +1,20 @@
 language: python
-
+ 
 python:
-    - "3.4"
     - "3.5"
     - "3.6"
-
+ 
+env:
+  - DJANGO=django==1.10
+  - DJANGO=django==1.11
+  - DJANGO=https://github.com/django/django/archive/master.tar.gz
+ 
 install:
-    - pip install django
-    - pip install pillow
-
+    - pip install coveralls
+    - pip install $DJANGO
+ 
 script:
-    - python -Wall manage.py test
+    - coverage run --source blog setup.py test
+
+after_success:
+    - coveralls

@@ -1,10 +1,11 @@
+"""contet_processor."""
 from django.db.models import Count
 from .forms import PostSerachForm
 from .models import Category, Tag, Link, Analytics, Ads, SiteDetail, Comment
 
 
 def common(request):
-
+    """blogで使うcontextの設定."""
     try:
         mysite = SiteDetail.objects.latest('pk')
     except SiteDetail.DoesNotExist:
