@@ -1,3 +1,4 @@
+"""models.py."""
 from django.db import models
 from django.utils import timezone
 
@@ -10,6 +11,7 @@ class Category(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.name
 
 
@@ -21,6 +23,7 @@ class Tag(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.name
 
 
@@ -40,15 +43,18 @@ class Post(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.title
 
     def get_next(self):
+        """次の記事."""
         next_post = Post.objects.filter(is_publick=True, pk__gt=self.pk)
         if next_post:
             return next_post.first()
         return None
 
     def get_prev(self):
+        """前の記事."""
         prev_post = Post.objects.filter(
             is_publick=True, pk__lt=self.pk).order_by('-pk')
         if prev_post:
@@ -68,6 +74,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.text[:10]
 
 
@@ -79,17 +86,19 @@ class Link(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.name
 
 
 class Analytics(models.Model):
-    """アナリティクスの情報。"""
+    """アナリティクスの情報."""
 
     name = models.CharField('アナリティクス', max_length=255, blank=True)
     html = models.TextField('アナリティクスHTML', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.name
 
 
@@ -101,6 +110,7 @@ class Ads(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.name
 
 
@@ -114,4 +124,5 @@ class SiteDetail(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
+        """str."""
         return self.author

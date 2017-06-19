@@ -1,7 +1,12 @@
 *.pyc
 *.pyo
+.eggs
+*.egg-info
+.cache
 __pycache__
 db.sqlite3
 dist/
 django_torina_blog.egg-info/
 migrations
+.coverage
+.tox

@@ -5,6 +5,7 @@ django-torina-blog
     :target: https://travis-ci.org/naritotakizawa/django-torina-blog
 
 ブログ用のDjangoアプリケーションです。
+
 https://torina.top/
 
 
@@ -12,8 +13,8 @@ https://torina.top/
 Requirement
 --------------
 
-:Python: 3.4以上
-:Django: 1.11以上
+:Python: 3.5以上
+:Django: 1.10以上
 
 
 Quick start
@@ -26,12 +27,12 @@ Quick start
 
     INSTALLED_APPS = [
         ...
-        'blog',
+        'blog',  # add
         'django.contrib.sites',
         'django.contrib.sitemaps',
     ]
     
-    SITE_ID = 1  # sitesフレームワークを利用する場合に必要な記述
+    SITE_ID = 1  # add
 
 3. settings.pyのcontext_processorsに'blog.context_processors.common'を足す::
 
@@ -52,27 +53,18 @@ Quick start
 	    },
 	]
 
-4. MEDIA_ROOT、MEDIA_URLを例えば以下のように::
+4. MEDIA_ROOT、MEDIA_URLを設定する::
 
     # settings.py
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
 
-5. urls.pyを、例えば以下のようにする::
+5. ルートのurls.pyに足す::
 
-	from django.conf import settings
-	from django.conf.urls import url, include
-	from django.conf.urls.static import static
-	from django.contrib import admin
-	 
 	urlpatterns = [
 	    url(r'^admin/', admin.site.urls),
-	    url(r'^blog/', include('blog.urls', namespace='blog')),
+	    url(r'^blog/', include('blog.urls', namespace='blog')),  # add
 	]
-	# Development Environment
-	if settings.DEBUG:
-	    urlpatterns += static(settings.MEDIA_URL,
-	                          document_root=settings.MEDIA_ROOT)
 
 6. python manage.py migrate　でモデルを追加する.
 

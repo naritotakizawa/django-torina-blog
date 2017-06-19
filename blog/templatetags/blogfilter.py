@@ -17,7 +17,8 @@ def url(text):
     """[filter url]http://...[end]を、aタグして解釈する.
 
     >>> url('[filter url]https://torina.top[end]')
-    '<a target="_blank" rel="nofollow" href="https://torina.top" rel="nofollow">https://torina.top</a>'
+    '<a target="_blank" rel="nofollow" href="https://torina.top" \
+    rel="nofollow">https://torina.top</a>'
 
     """
     text = text.replace('<br />', '\n')
@@ -46,7 +47,8 @@ def img(text):
     Bootstrap4に合わせたタグです
 
     >>> img('[filter img]https://torina.top/a.png[end]')
-    '<a href="https://torina.top/a.png" target="_blank" rel="nofollow"><img src="https://torina.top/a.png" class="img-fluid"/></a>'
+    '<a href="https://torina.top/a.png" target="_blank" rel="nofollow">\
+    <img src="https://torina.top/a.png" class="img-fluid"/></a>'
 
     """
     patterns = [r"http.*?jpg", r"http.*?png", r"http.*?jpeg", r"http.*?gif"]
@@ -93,9 +95,13 @@ def quote(text):
 def midasi1(text):
     """<span class="midasi1">文字</span>に置き換える.
 
-    .midasi1 {     border-left: 10px solid rgb(197,219,238);     border-
-    bottom: 1px solid rgb(197,219,238);     margin-top: 26px;
-    padding-left: 7px;     padding-bottom: 4px; }
+    .midasi1 {
+        border-left: 10px solid rgb(197,219,238);
+        border-bottom: 1px solid rgb(197,219,238);
+        margin-top: 26px;
+        padding-left: 7px;
+        padding-bottom: 4px;
+    }
 
     >>> midasi1('[filter midasi1]H1 String[end]')
     '<p class="midasi1">H1 String</p>'
@@ -113,8 +119,11 @@ def blog(value, autoescape=True):
     >>> blog('[filter html]<h1>Hello</h1>[end]')
     '<h1>Hello</h1>'
 
-    >>> blog('[filter html]<h1>Hello</h1>[end][filter url]https://torina.top[end]')
-    '<h1>Hello</h1><a target="_blank" rel="nofollow" href="https://torina.top" rel="nofollow">https://torina.top</a>'
+    >>> blog('[filter html]<h1>Hello</h1>[end]\
+    [filter url]https://torina.top[end]')
+
+    '<h1>Hello</h1><a target="_blank" rel="nofollow" \
+    href="https://torina.top" rel="nofollow">https://torina.top</a>'
 
     """
     autoescape = autoescape and not isinstance(value, SafeData)
