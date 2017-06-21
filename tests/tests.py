@@ -109,5 +109,5 @@ class TestViews(TestCase):
     def test_sitemap_get(self):
         """/sitemap.xml アクセスのテスト."""
         response = self.client.get(
-            reverse('blog:django.contrib.sitemaps.views.sitemap'))
+            reverse('blog:sitemap'))
         self.assertEqual(response.status_code, 200)
