@@ -66,7 +66,7 @@ Quick start
 
 	urlpatterns = [
 	    url(r'^admin/', admin.site.urls),
-	    url(r'^blog/', include('blog.urls', namespace='blog')),  # add
+	    url(r'^blog/', include('blog.urls')),  # add
 	]
 
 6. python manage.py migrate　でモデルを追加する.
