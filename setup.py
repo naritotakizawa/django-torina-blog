@@ -23,7 +23,7 @@ class DjangoTest(TestCommand):
 setup(
     name='django-torina-blog',
     version='0.6',
-    packages=find_packages(exclude=('tests',)),
+    packages=find_packages(exclude=('tests','project')),
     include_package_data=True,
     license='MIT License',  # example license
     description='Django Blog App',
