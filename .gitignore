@@ -14,3 +14,6 @@ media/
 dist/
 django_torina_blog.egg-info/
 __pycache__
+
+
+client_secrets.p12

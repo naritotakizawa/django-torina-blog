@@ -2,7 +2,7 @@
 from django.contrib import admin
 from .models import (
     Post, Category, Tag, Comment, ReComment,
-    Link, Analytics, Ads, SiteDetail
+    Link, Analytics, Ads, SiteDetail, PopularPost
 )
 
 
@@ -23,3 +23,4 @@ admin.site.register(ReComment)
 admin.site.register(Analytics)
 admin.site.register(Ads)
 admin.site.register(SiteDetail, OneDataAdmin)
+admin.site.register(PopularPost)

@@ -76,3 +76,20 @@ Quick start
 8. http://127.0.0.1:8000/blog/ で、表示されるのを確認する
 
 9. テンプレートを上書きしたりする。
+
+
+過去1週間の人気記事を取得する場合(Google Analytics)
+----------------------------------------------------------
+
+1. インストールする::
+
+    pip install google-api-python-client
+    pip install pyopenssl
+
+2. settings.pyに追記::
+
+    SERVICE_ACCOUNT_EMAIL = 'your@account'
+    KEY_FILE_LOCATION = os.path.join(BASE_DIR, 'client_secrets.p12')
+    VIEW_ID = 'your view id'
+
+3. python manage.py execute で取得開始(cron等で呼び出すようにするとgood)
