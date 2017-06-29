@@ -127,7 +127,7 @@ class CommentCreateView(generic.CreateView):
 
 class ReCommentCreateView(generic.CreateView):
     """返信コメント投稿."""
- 
+
     model = ReComment
     form_class = ReCommentCreateForm
     template_name = 'blog/comment_form.html'
@@ -145,12 +145,12 @@ class ReCommentCreateView(generic.CreateView):
         """元コメントを返信コメントのtargetに指定."""
         comment_pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=comment_pk)
- 
+
         # 紐づくコメントを設定する
         self.object = form.save(commit=False)
         self.object.target = comment
         self.object.save()
- 
+
         # 記事詳細にリダイレクト
         return redirect('blog:detail', pk=comment.target.pk)
 

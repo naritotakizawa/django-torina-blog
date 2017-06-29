@@ -47,4 +47,3 @@ class ReCommentCreateForm(forms.ModelForm):
         self.fields['name'].widget.attrs['class'] = 'form-control'
         self.fields['text'].widget.attrs['class'] = 'form-control'
         self.fields['icon'].widget.attrs['class'] = 'form-control-file'
-
