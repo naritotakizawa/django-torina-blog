@@ -70,44 +70,44 @@
           All Category
         </a>
         {% for category in categories %}
-        <a class="list-group-item" href="{% url 'blog:category' category.name %}">
-          {{ category.name }}({{ category.num_posts }})
+        <a class="list-group-item justify-content-between" href="{% url 'blog:category' category.name %}">
+          {{ category.name }}<span class="badge badge-primary badge-pill">{{ category.num_posts }}</span>
         </a>
         {% endfor %}
       </div>
 
       <div class="list-group mt-5">
-        <a href="#" class="list-group-item active">
+        <a href="#" class="list-group-item active justify-content-between">
           Tag
         </a>
         {% for tag in tags  %}
-        <a class="list-group-item" href="{% url 'blog:tag' tag.name %}">
-            {{ tag.name }}({{ tag.num_posts }})
+        <a class="list-group-item justify-content-between" href="{% url 'blog:tag' tag.name %}">
+            {{ tag.name }}<span class="badge badge-primary badge-pill">{{ tag.num_posts }}</span>
         </a>
         {% endfor %}
-        <a href="{% url 'blog:tag_list' %}" class="list-group-item">
+        <a href="{% url 'blog:tag_list' %}" class="list-group-item justify-content-between">
           >>> 全てのタグを見る
         </a>
       </div>
 
       <div class="list-group my-5">
-        <a href="#" class="list-group-item active">
+        <a href="#" class="list-group-item active justify-content-between">
           Link
         </a>
         {% for link in links  %}
-        <a class="list-group-item" href="{{ link.adrs }}" target="_blank" rel="nofollow">
+        <a class="list-group-item justify-content-between" href="{{ link.adrs }}" target="_blank" rel="nofollow">
             {{ link.name }}
         </a>
         {% endfor %}
       </div>
       <div class="hidden-sm-down list-group my-5">
-        <a href="#" class="list-group-item active">
+        <a href="#" class="list-group-item active justify-content-between">
           Comment
         </a>
         {% for comment in comments  %}
-        <a class="list-group-item" href="{% url 'blog:detail' comment.target.pk %}#comment-area">
+        <a class="list-group-item justify-content-between" href="{% url 'blog:detail' comment.target.pk %}#comment-area">
+            {{ comment.name }}(返信:{{ comment.num_recomments }})
             <span class="badge badge-primary badge-pill">{% by_the_time comment.created_at %}</span>
-            &nbsp;by&nbsp;{{ comment.name }}
         </a>
         {% endfor %}    
       

@@ -79,6 +79,22 @@ class Comment(models.Model):
         return self.text[:10]
 
 
+class ReComment(models.Model):
+    """返信コメント."""
+
+    name = models.CharField('名前', max_length=255, default='名無し')
+    text = models.TextField('コメント')
+    icon = models.ImageField(
+        'サムネイル', upload_to='com_icon/', blank=True, null=True)
+    target = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, verbose_name='対象コメント')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+
+    def __str__(self):
+        """str."""
+        return self.text[:10]
+
+
 class Link(models.Model):
     """リンク."""
 

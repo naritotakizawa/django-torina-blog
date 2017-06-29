@@ -24,6 +24,9 @@ def common(request):
         'ads': Ads.objects.all(),
         'global_form': PostSerachForm(request.GET),
         'mysite': mysite,
-        'comments': Comment.objects.order_by('-created_at')[:10],
+        #'comments': Comment.objects.order_by('-created_at')[:10],
+        'comments': Comment.objects.annotate(
+            num_recomments=Count('recomment')).order_by('-created_at')[:10],
+
     }
     return context

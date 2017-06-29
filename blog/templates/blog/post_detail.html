@@ -65,6 +65,7 @@
 </div>
 
 <div id="comment-area">
+<!-- コメント一覧 -->
 {% for comment in post.comment_set.all %}
 <div class="media m-3">
   {% if comment.icon %}
@@ -77,8 +78,29 @@
       <span class="badge badge-primary badge-pill">{% by_the_time comment.created_at %}</span>
       {{ comment.name }}
       <span class="lead text-muted">{{ comment.created_at }}</span>
+      <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
     </h5>
     {{ comment.text | linebreaksbr }}
+    <!-- 返信コメント -->
+    {% for recomment in comment.recomment_set.all %}
+        <div class="media m-3">
+          {% if recomment.icon %}
+            <img class="d-flex mr-3 icon" src="{{ recomment.icon.url }}">
+          {% else %}
+            <img class="d-flex mr-3 icon" src="{% static 'blog/img/noimage.png' %}">
+          {% endif %}
+          <div class="media-body">
+            <h5 class="mt-0">
+              <span class="badge badge-primary badge-pill">{% by_the_time recomment.created_at %}</span>
+              {{ recomment.name }}
+              <span class="lead text-muted">{{ recomment.created_at }}</span>
+            </h5>
+            {{ recomment.text | linebreaksbr }}
+          </div>
+        </div>    
+
+    {% endfor %}
+    <!-- 返信コメントおわり -->
   </div>
 </div>
 {% endfor %}
