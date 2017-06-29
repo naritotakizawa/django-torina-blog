@@ -12,6 +12,7 @@ manage.py
 project/
 media/
 dist/
+build/
 django_torina_blog.egg-info/
 __pycache__
 
