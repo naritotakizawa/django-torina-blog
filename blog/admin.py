@@ -1,8 +1,8 @@
 """admin.py"""
 from django.contrib import admin
 from .models import (
-    Post, Category, Tag, Comment,
-    Link, Analytics, Ads, SiteDetail
+    Post, Category, Tag, Comment, ReComment,
+    Link, Analytics, Ads, SiteDetail, PopularPost
 )
 
 
@@ -19,6 +19,8 @@ admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Link)
 admin.site.register(Comment)
+admin.site.register(ReComment)
 admin.site.register(Analytics)
 admin.site.register(Ads)
 admin.site.register(SiteDetail, OneDataAdmin)
+admin.site.register(PopularPost)

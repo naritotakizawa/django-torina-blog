@@ -51,15 +51,13 @@ def img(text):
     <img src="https://torina.top/a.png" class="img-fluid"/></a>'
 
     """
-    patterns = [r"http.*?jpg", r"http.*?png", r"http.*?jpeg", r"http.*?gif"]
-    for ptn in patterns:
-        href = re.search(ptn, text)
-        if href:
-            return (
-                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-                'class="img-fluid"/></a>'
-            ).format(href.group())
-    return text
+    text = text.replace('<br />', '\n')
+    text = text.replace('[filter img]', '').replace('[end]', '')
+    tag = (
+        '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+        'class="img-fluid"/></a>'
+    ).format(text)
+    return tag
 
 
 def cord(text):

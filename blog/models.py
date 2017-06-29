@@ -48,7 +48,8 @@ class Post(models.Model):
 
     def get_next(self):
         """次の記事."""
-        next_post = Post.objects.filter(is_publick=True, pk__gt=self.pk)
+        next_post = Post.objects.filter(
+            is_publick=True, created_at__gt=self.created_at)
         if next_post:
             return next_post.first()
         return None
@@ -56,7 +57,7 @@ class Post(models.Model):
     def get_prev(self):
         """前の記事."""
         prev_post = Post.objects.filter(
-            is_publick=True, pk__lt=self.pk).order_by('-pk')
+            is_publick=True, created_at__lt=self.created_at)
         if prev_post:
             return prev_post.first()
         return None
@@ -71,6 +72,22 @@ class Comment(models.Model):
         'サムネイル', upload_to='com_icon/', blank=True, null=True)
     target = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name='対象記事')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+
+    def __str__(self):
+        """str."""
+        return self.text[:10]
+
+
+class ReComment(models.Model):
+    """返信コメント."""
+
+    name = models.CharField('名前', max_length=255, default='名無し')
+    text = models.TextField('コメント')
+    icon = models.ImageField(
+        'サムネイル', upload_to='com_icon/', blank=True, null=True)
+    target = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, verbose_name='対象コメント')
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
@@ -126,3 +143,15 @@ class SiteDetail(models.Model):
     def __str__(self):
         """str."""
         return self.author
+
+
+class PopularPost(models.Model):
+    """人気記事."""
+
+    title = models.CharField('タイトル', max_length=255)
+    url = models.CharField('URL', max_length=255)
+    page_view = models.IntegerField('ページビュー数')
+
+    def __str__(self):
+        return '{0} - {1} - {2}'.format(
+            self.url, self.title, self.page_view)

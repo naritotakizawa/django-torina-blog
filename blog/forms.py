@@ -1,6 +1,6 @@
 """forms.py."""
 from django import forms
-from .models import Comment
+from .models import Comment, ReComment
 
 
 class PostSerachForm(forms.Form):
@@ -22,6 +22,23 @@ class CommentCreateForm(forms.ModelForm):
         """Meta."""
 
         model = Comment
+        fields = ('name', 'text', 'icon')
+
+    def __init__(self, *args, **kwargs):
+        """init."""
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'form-control'
+        self.fields['text'].widget.attrs['class'] = 'form-control'
+        self.fields['icon'].widget.attrs['class'] = 'form-control-file'
+
+
+class ReCommentCreateForm(forms.ModelForm):
+    """返信コメント投稿フォーム."""
+
+    class Meta:
+        """Meta."""
+
+        model = ReComment
         fields = ('name', 'text', 'icon')
 
     def __init__(self, *args, **kwargs):

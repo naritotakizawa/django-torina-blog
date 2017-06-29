@@ -36,6 +36,9 @@ urlpatterns = [
     url(r'^comment/(?P<pk>[0-9]+)/$',
         views.CommentCreateView.as_view(), name='comment'),
 
+    url(r'^recomment/(?P<pk>[0-9]+)/$',
+        views.ReCommentCreateView.as_view(), name='recomment'),
+
     url(r'^private/$', views.PostPrivateIndexView.as_view(), name='private'),
 
     url(r'^latest/feed/$', LatestEntriesFeed(), name='feed'),

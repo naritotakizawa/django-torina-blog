@@ -6,8 +6,8 @@ from django.db.models import Q, Count
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views import generic
-from .forms import PostSerachForm, CommentCreateForm
-from .models import Post, Comment, Tag, Category
+from .forms import PostSerachForm, CommentCreateForm, ReCommentCreateForm
+from .models import Post, Comment, Tag, Category, ReComment
 
 
 class BaseListView(generic.ListView):
@@ -123,6 +123,36 @@ class CommentCreateView(generic.CreateView):
         self.object.target = Post.objects.get(pk=post_pk)
         self.object.save()
         return redirect('blog:detail', pk=post_pk)
+
+
+class ReCommentCreateView(generic.CreateView):
+    """返信コメント投稿."""
+
+    model = ReComment
+    form_class = ReCommentCreateForm
+    template_name = 'blog/comment_form.html'
+
+    def get_context_data(self, *args, **kwargs):
+        """記事のpkを保持."""
+        comment_pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=comment_pk)
+
+        context = super().get_context_data(*args, **kwargs)
+        context['post_pk'] = comment.target.pk
+        return context
+
+    def form_valid(self, form):
+        """元コメントを返信コメントのtargetに指定."""
+        comment_pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=comment_pk)
+
+        # 紐づくコメントを設定する
+        self.object = form.save(commit=False)
+        self.object.target = comment
+        self.object.save()
+
+        # 記事詳細にリダイレクト
+        return redirect('blog:detail', pk=comment.target.pk)
 
 
 class TagListView(generic.ListView):

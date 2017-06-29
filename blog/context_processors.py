@@ -1,7 +1,10 @@
 """contet_processor."""
 from django.db.models import Count
 from .forms import PostSerachForm
-from .models import Category, Tag, Link, Analytics, Ads, SiteDetail, Comment
+from .models import (
+    Category, Tag, Link, Analytics, Ads, SiteDetail, Comment,
+    PopularPost,
+)
 
 
 def common(request):
@@ -12,16 +15,18 @@ def common(request):
         mysite = None
 
     context = {
-        'categories': Category.objects.all(),
-        # 紐付いているポストの数が多い順に10個
-        # tag.num_posts で数を表示できる
+        'categories': Category.objects.annotate(
+            num_posts=Count('post')).order_by('-num_posts'),
         'tags': Tag.objects.annotate(
             num_posts=Count('post')).order_by('-num_posts')[:10],
+        'comments': Comment.objects.annotate(
+            num_recomments=Count('recomment')).order_by('-created_at')[:10],
+
         'links': Link.objects.all(),
         'analytics': Analytics.objects.all(),
         'ads': Ads.objects.all(),
         'global_form': PostSerachForm(request.GET),
         'mysite': mysite,
-        'comments': Comment.objects.order_by('-created_at')[:10],
+        'popular_post_list': PopularPost.objects.order_by('-page_view'),
     }
     return context
