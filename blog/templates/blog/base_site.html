@@ -71,7 +71,7 @@
         </a>
         {% for category in categories %}
         <a class="list-group-item" href="{% url 'blog:category' category.name %}">
-          {{ category.name }}
+          {{ category.name }}({{ category.num_posts }})
         </a>
         {% endfor %}
       </div>
