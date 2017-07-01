@@ -59,7 +59,7 @@ class Post(models.Model):
         prev_post = Post.objects.filter(
             is_publick=True, created_at__lt=self.created_at)
         if prev_post:
-            return prev_post.first()
+            return prev_post.last()
         return None
 
 
