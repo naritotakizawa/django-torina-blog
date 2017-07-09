@@ -167,7 +167,7 @@ class TagListView(generic.ListView):
 def ping(request):
     """Googleへpingを送信する."""
     try:
-        url = reverse_lazy('blog:sitemap')
+        url = reverse_lazy('blog:django.contrib.sitemaps.views.sitemap')
         ping_google(sitemap_url=url)
     except Exception:
         raise

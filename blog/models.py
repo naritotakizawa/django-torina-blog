@@ -49,8 +49,7 @@ class Post(models.Model):
     def get_next(self):
         """次の記事."""
         next_post = Post.objects.filter(
-            is_publick=True, created_at__gt=self.created_at
-        ).order_by('-created_at')
+            is_publick=True, created_at__gt=self.created_at)
         if next_post:
             return next_post.first()
         return None
@@ -58,8 +57,7 @@ class Post(models.Model):
     def get_prev(self):
         """前の記事."""
         prev_post = Post.objects.filter(
-            is_publick=True, created_at__lt=self.created_at
-        ).order_by('-created_at')
+            is_publick=True, created_at__lt=self.created_at)
         if prev_post:
             return prev_post.last()
         return None
