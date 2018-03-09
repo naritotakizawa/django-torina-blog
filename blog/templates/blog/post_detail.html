@@ -104,7 +104,7 @@
   {% endif %}
   <div class="media-body">
     <h5 class="mt-0">
-      <span class="badge badge-primary badge-pill">{% by_the_time comment.created_at %}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time comment.created_at %}</span>
       {{ comment.name }}
       <span class="lead text-muted">{{ comment.created_at }}</span>
       <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
@@ -120,7 +120,7 @@
           {% endif %}
           <div class="media-body">
             <h5 class="mt-0">
-              <span class="badge badge-primary badge-pill">{% by_the_time recomment.created_at %}</span>
+              <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
               {{ recomment.name }}
               <span class="lead text-muted">{{ recomment.created_at }}</span>
             </h5>
