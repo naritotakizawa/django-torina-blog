@@ -13,30 +13,27 @@
     {% endif %}
 {% endblock %}
 
-{% block nav_home %}active{% endblock %}
+{% block bread%}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">記事一覧</a></li>
+    {% if tag %}
+        <li class="breadcrumb-item">{{ tag.name }}</li>
+    {% elif category %}
+        <li class="breadcrumb-item">{{ category.name }}</li>
+    {% endif %}
+  </ol>
+</nav>
+{% endblock %}
 
 {% block content %}
 
-{% if tag %}
-<div class="alert alert-success" role="alert">
-  <h1 class="alert-heading">{{ tag.name }}</h1>
-  {{ tag.description | linebreaksbr | blog }}
-</div>
-{% endif %}
-
-{% if category %}
-<div class="alert alert-success" role="alert">
-  <h1 class="alert-heading">{{ category.name }}</h1>
-  {{ category.description | linebreaksbr | blog }}
-</div>
-{% endif %}
-
   {% for post in post_list %}
-    <div class="mb-5 card card-outline-primary">
-      <div class="card-header bg-primary">
+    <div class="mb-5 card">
+      <div class="card-header bg-{{ mysite.color }}">
         <h2 class="card-title text-white">{{ post.title }}</h2>
       </div>
-      <div class="card-block row">
+      <div class="card-block row p-2">
         <div class="col-xs-12 col-sm-6 text-center">
           {% if post.thumnail %}
             <a href="{{ post.thumnail.url }}" target="_blank" rel="nofollow"><img class="img-fluid" src="{{ post.thumnail.url }}"></a>
@@ -54,7 +51,7 @@
               <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
             </span>
           {% endfor %}
-          <span class="badge badge-primary badge-pill">{% by_the_time post.created_at %}</span>
+          <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
           <br>
           <span class="text-muted">{{ post.created_at }}</span>
 
@@ -63,7 +60,7 @@
               <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
             </p>
           {% endif %}
-          <a class="btn btn-outline-primary btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
+          <a class="btn btn-outline-{{ mysite.color }} btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
         </div>
       </div>
     </div>

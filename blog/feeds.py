@@ -31,13 +31,16 @@ class LatestEntriesFeed(Feed):
 
     def item_description(self, item):
         """記事の説明."""
-        message = 'カテゴリ:{0} タグ:{1}'
-        category = item.category
-        tags = ' '.join(tag.name for tag in item.tag.all())
-        message = message.format(category, tags)
-        return message
+        # 記事の説明フィールドがあればそれを、なければカテゴリとタグ名を
+        if item.description:
+            return item.description
+        else:
+            message = 'カテゴリ:{0} タグ:{1}'
+            category = item.category
+            tags = ' '.join(tag.name for tag in item.tag.all())
+            message = message.format(category, tags)
+            return message
 
-    # item_link is only needed if NewsItem has no get_absolute_url method.
     def item_link(self, item):
         """記事へのリンク."""
         return reverse('blog:detail', args=[item.pk])

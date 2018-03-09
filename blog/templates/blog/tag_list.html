@@ -3,7 +3,15 @@
 {% load blogfilter %}
 {% block meta_des %}{{ mysite.description }}のタグ一覧ページです。{% endblock %}
 {% block title %}タグ一覧 | {{ mysite.title }}{% endblock %}
-{% block nav_tag_list %}active{% endblock %}
+
+{% block bread%}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">記事一覧</a></li>
+    <li class="breadcrumb-item">タグ一覧</li>
+  </ol>
+</nav>
+{% endblock %}
 
 {% block content %}
   {% for tag in tag_list %}
@@ -12,10 +20,6 @@
             {{ tag.name }}({{ tag.num_posts }})
         </a>
     </p>
-    <p>{{ tag.description | linebreaksbr | blog }}</p>
     <hr>
   {% endfor %}
-
-  {% include "blog/page.html" %}
-
 {% endblock %}

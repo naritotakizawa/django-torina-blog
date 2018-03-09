@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.sitemaps.views import sitemap
 from . import views
 from .feeds import LatestEntriesFeed
@@ -18,30 +18,24 @@ sitemaps = {
 
 
 urlpatterns = [
-    url(r'^$', views.PostIndexView.as_view(), name='index'),
+    path('', views.PostIndexView.as_view(), name='index'),
 
-    url(r'^ping/$', views.ping, name='ping'),
+    path('ping/', views.ping, name='ping'),
 
-    url(r'^alltag/$', views.TagListView.as_view(), name='tag_list'),
+    path('alltag/', views.TagListView.as_view(), name='tag_list'),
 
-    url(r'^detail/(?P<pk>[0-9]+)/$',
-        views.PostDetailView.as_view(), name='detail'),
+    path('detail/<int:pk>/', views.PostDetailView.as_view(), name='detail'),
 
-    url(r'^category/(?P<category>.*)/$',
-        views.CategoryView.as_view(), name='category'),
+    path('category/<str:category>/', views.CategoryView.as_view(), name='category'),
 
-    url(r'^tag/(?P<tag>.*)/$',
-        views.TagView.as_view(), name='tag'),
+    path('tag/<str:tag>/', views.TagView.as_view(), name='tag'),
 
-    url(r'^comment/(?P<pk>[0-9]+)/$',
-        views.CommentCreateView.as_view(), name='comment'),
+    path('comment/<int:pk>/', views.CommentCreateView.as_view(), name='comment'),
 
-    url(r'^recomment/(?P<pk>[0-9]+)/$',
-        views.ReCommentCreateView.as_view(), name='recomment'),
+    path('recomment/<int:pk>/', views.ReCommentCreateView.as_view(), name='recomment'),
 
-    url(r'^private/$', views.PostPrivateIndexView.as_view(), name='private'),
+    path('private/', views.PostPrivateIndexView.as_view(), name='private'),
 
-    url(r'^latest/feed/$', LatestEntriesFeed(), name='feed'),
-    url(r'^sitemap\.xml$', sitemap, {
-        'sitemaps': sitemaps}, name='sitemap'),
+    path('latest/feed/', LatestEntriesFeed(), name='feed'),
+    path('sitemap.xml/', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]

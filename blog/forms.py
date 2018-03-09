@@ -6,13 +6,11 @@ from .models import Comment, ReComment
 class PostSerachForm(forms.Form):
     """記事検索フォーム."""
 
-    keyword = forms.CharField(label='キーワード', required=False)
-
-    def __init__(self, *args, **kwargs):
-        """init."""
-        super().__init__(*args, **kwargs)
-        self.fields['keyword'].widget.attrs['class'] = 'form-control'
-        self.fields['keyword'].widget.attrs['placeholder'] = 'クイックサーチ'
+    keyword = forms.CharField(
+        label='キーワード', required=False,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control mr-sm-2', 'placeholder': 'クイックサーチ'}),
+    )
 
 
 class CommentCreateForm(forms.ModelForm):
@@ -23,13 +21,17 @@ class CommentCreateForm(forms.ModelForm):
 
         model = Comment
         fields = ('name', 'text', 'icon')
-
-    def __init__(self, *args, **kwargs):
-        """init."""
-        super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['class'] = 'form-control'
-        self.fields['text'].widget.attrs['class'] = 'form-control'
-        self.fields['icon'].widget.attrs['class'] = 'form-control-file'
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': "form-control",
+            }),
+            'text': forms.Textarea(attrs={
+                'class': "form-control",
+            }),
+            'icon': forms.ClearableFileInput(attrs={
+                'class': "form-control-file",
+            }),
+        }
 
 
 class ReCommentCreateForm(forms.ModelForm):
@@ -40,10 +42,14 @@ class ReCommentCreateForm(forms.ModelForm):
 
         model = ReComment
         fields = ('name', 'text', 'icon')
-
-    def __init__(self, *args, **kwargs):
-        """init."""
-        super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['class'] = 'form-control'
-        self.fields['text'].widget.attrs['class'] = 'form-control'
-        self.fields['icon'].widget.attrs['class'] = 'form-control-file'
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': "form-control",
+            }),
+            'text': forms.Textarea(attrs={
+                'class': "form-control",
+            }),
+            'icon': forms.ClearableFileInput(attrs={
+                'class': "form-control-file",
+            }),
+        }

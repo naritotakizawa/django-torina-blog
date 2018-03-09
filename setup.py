@@ -22,10 +22,10 @@ class DjangoTest(TestCommand):
 
 setup(
     name='django-torina-blog',
-    version='0.6',
+    version='1.0',
     packages=find_packages(exclude=('tests','project')),
     include_package_data=True,
-    license='MIT License',  # example license
+    license='MIT License',
     description='Django Blog App',
     long_description=README.decode(),
     url='https://github.com/naritotakizawa/django-torina-blog',
@@ -34,8 +34,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
+        'Framework :: Django :: 2.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',

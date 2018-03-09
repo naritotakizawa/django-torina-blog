@@ -7,7 +7,7 @@ from django.template.defaultfilters import urlize
 from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe, SafeData
-
+from blog.models import Image
 
 register = template.Library()
 html_parser = html.parser.HTMLParser()
@@ -57,6 +57,24 @@ def img(text):
         '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
         'class="img-fluid"/></a>'
     ).format(text)
+    return tag
+
+
+def imgpk(text):
+    """[filter imgpk]1[end]を、正しいimgタグにする
+    
+    1の部分は、Imageモデルインスタンスのpkとなります。
+    """
+    text = text.replace('<br />', '\n')
+    text = text.replace('[filter imgpk]', '').replace('[end]', '')
+    try:
+        image = Image.objects.get(pk=int(text)).src.url
+    except Exception:
+        image = ''
+    tag = (
+        '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+        'class="img-fluid"/></a>'
+    ).format(image)
     return tag
 
 

@@ -8,40 +8,38 @@
 
 
 {% block nav %}
-<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary fixed-top">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
-    &#9776;
+<nav class="navbar navbar fixed-top navbar-expand-lg navbar-dark bg-{{ mysite.color }}">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="container">
-  <div class="collapse navbar-collapse" id="exCollapsingNavbar2">
-    
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item {% block nav_home %}{% endblock %}">
-          <a class="nav-link" href="{% url 'blog:index' %}">Home</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:tag_list' %}">All Tag</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" target="_blank" href="{% url 'blog:feed' %}" rel="nofollow">Feed</a>
+      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'blog:private' %}" rel="nofollow">Private</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% block nav_tag_list %}{% endblock %}" href="{% url 'blog:tag_list' %}">All Tag</a>
+          <a class="nav-link" target="_blank" href="{% url 'admin:index' %}" rel="nofollow">Admin</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" target="_blank" href="{% url 'blog:feed' %}" rel="nofollow">Feed</a>
+          <a class="nav-link" href="{% url 'blog:ping' %}" rel="nofollow">Ping</a>
         </li>
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'blog:private' %}" rel="nofollow">Private</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" target="_blank" href="{% url 'admin:index' %}" rel="nofollow">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'blog:ping' %}" rel="nofollow">Ping</a>
-          </li>
-        {% endif %}
-      </ul>
-      <form action="{% url 'blog:index' %}" method="GET" class="form-inline float-right">
-        {{ global_form.keyword }}
-        <button class="btn btn-secondary" type="submit">Search</button>
-      </form>
-    </div>
+      {% endif %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="{% url 'blog:index' %}">
+      {{ global_form.keyword }}
+      <button class="btn my-2 my-sm-0" type="submit">検索</button>
+    </form>
   </div>
 </nav>
 {% endblock %}
@@ -61,17 +59,19 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-8">
+      {% block bread %}{% endblock %}
+
       {% block content %}
       {% endblock %}
 
        {% if popular_post_list %}
         <!-- 過去の人気記事一覧 -->
         <div class="list-group my-5 col-12">
-            <a href="#" class="list-group-item active justify-content-between">
+            <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
               過去1週間の人気記事
             </a>
             {% for popular in popular_post_list %}
-            <a class="list-group-item justify-content-between" href="{{ popular.url }}">
+            <a class="list-group-item" href="{{ popular.url }}">
                 {{ popular.title }} - {{ popular.page_view }}View
             </a>
             {% endfor %}
@@ -79,50 +79,52 @@
         {% endif %}
 
     </div><!-- メインコンテンツ -->
+
     <div class="col-12 col-sm-3 offset-sm-1">
       <div class="list-group">
-        <a href="#" class="list-group-item active">
+        <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           All Category
         </a>
         {% for category in categories %}
-        <a class="list-group-item justify-content-between" href="{% url 'blog:category' category.name %}">
-          {{ category.name }}<span class="badge badge-primary badge-pill">{{ category.num_posts }}</span>
+        <a class="list-group-item" href="{% url 'blog:category' category.name %}">
+          {{ category.name }}<span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{{ category.num_posts }}</span>
         </a>
         {% endfor %}
       </div>
 
       <div class="list-group mt-5">
-        <a href="#" class="list-group-item active justify-content-between">
+        <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Tag
         </a>
         {% for tag in tags  %}
-        <a class="list-group-item justify-content-between" href="{% url 'blog:tag' tag.name %}">
-            {{ tag.name }}<span class="badge badge-primary badge-pill">{{ tag.num_posts }}</span>
+        <a class="list-group-item" href="{% url 'blog:tag' tag.name %}">
+            {{ tag.name }}<span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{{ tag.num_posts }}</span>
         </a>
         {% endfor %}
-        <a href="{% url 'blog:tag_list' %}" class="list-group-item justify-content-between">
+        <a href="{% url 'blog:tag_list' %}" class="list-group-item">
           >>> 全てのタグを見る
         </a>
       </div>
 
       <div class="list-group my-5">
-        <a href="#" class="list-group-item active justify-content-between">
+        <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Link
         </a>
         {% for link in links  %}
-        <a class="list-group-item justify-content-between" href="{{ link.adrs }}" target="_blank" rel="nofollow">
+        <a class="list-group-item" href="{{ link.adrs }}" target="_blank" rel="nofollow">
             {{ link.name }}
         </a>
         {% endfor %}
       </div>
+  
       <div class="hidden-sm-down list-group my-5">
-        <a href="#" class="list-group-item active justify-content-between">
+        <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Comment
         </a>
         {% for comment in comments  %}
-        <a class="list-group-item justify-content-between" href="{% url 'blog:detail' comment.target.pk %}#comment-area">
+        <a class="list-group-item" href="{% url 'blog:detail' comment.target.pk %}#comment-area">
             {{ comment.name }}(返信:{{ comment.num_recomments }})
-            <span class="badge badge-primary badge-pill">{% by_the_time comment.created_at %}</span>
+            <span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{% by_the_time comment.created_at %}</span>
         </a>
         {% endfor %}    
       
@@ -137,7 +139,7 @@
 {% endblock %}
 
 {% block footer %}
-<footer class="text-center bg-primary">
+<footer class="text-center bg-{{ mysite.color }}">
   <div class="container">
     <p class="text-white">Copyright {{ mysite.author }} All Rights Reserved.</p>
     <p><a href="mailto:{{ mysite.author_mail }}" rel="nofollow">{{ mysite.author_mail }}</a></p>

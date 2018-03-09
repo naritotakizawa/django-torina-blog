@@ -1,6 +1,18 @@
-"""models.py."""
+import os
+from django.contrib.sites.models import Site
 from django.db import models
 from django.utils import timezone
+
+
+SITE_COLORS = (
+    ('primary', '青色'),
+    ('secondary', '灰色'),
+    ('success', '緑色'),
+    ('info', '水色'),
+    ('warning', '黄色'),
+    ('danger', '赤'),
+    ('dark', '黒'),
+)
 
 
 class Category(models.Model):
@@ -33,13 +45,14 @@ class Post(models.Model):
     title = models.CharField('タイトル', max_length=255)
     text = models.TextField('本文')
     category = models.ForeignKey(
-        Category, verbose_name='カテゴリ', on_delete=models.PROTECT, null=True)
+        Category, verbose_name='カテゴリ', on_delete=models.PROTECT)
     tag = models.ManyToManyField(Tag, blank=True, verbose_name='タグ')
     thumnail = models.ImageField(
-        'サムネイル', upload_to='thumnail/', blank=True, null=True)
+        'サムネイル', upload_to='uploads/%Y/%m/%d/', blank=True, null=True)
     is_publick = models.BooleanField('公開可能か?', default=True)
     friend_posts = models.ManyToManyField(
         'self', verbose_name='関連記事', blank=True)
+    description = models.TextField('記事の説明', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
@@ -136,10 +149,12 @@ class Ads(models.Model):
 class SiteDetail(models.Model):
     """サイトの詳細."""
 
-    title = models.CharField('タイトル', max_length=255, blank=True)
-    description = models.CharField('サイトの説明', max_length=255, blank=True)
-    author = models.CharField('管理者', max_length=255, blank=True)
-    author_mail = models.EmailField('管理者アドレス', max_length=255, blank=True)
+    site = models.OneToOneField(Site, verbose_name='Site', on_delete=models.PROTECT)
+    title = models.CharField('タイトル', max_length=255, default='サンプルのタイトル')
+    description = models.CharField('サイトの説明', max_length=255, default='サンプルの説明')
+    author = models.CharField('管理者', max_length=255, default='サンプルの管理者')
+    author_mail = models.EmailField('管理者アドレス', max_length=255, default='your_mail@gmail.com')
+    color = models.CharField('サイトテーマ色', choices=SITE_COLORS, default='primary', max_length=30)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
@@ -157,3 +172,33 @@ class PopularPost(models.Model):
     def __str__(self):
         return '{0} - {1} - {2}'.format(
             self.url, self.title, self.page_view)
+
+
+class Image(models.Model):
+    """記事に紐づく画像ファイル"""
+
+    post = models.ForeignKey(
+        Post, verbose_name='記事', on_delete=models.PROTECT,
+    )
+    src = models.ImageField('画像', upload_to='uploads/%Y/%m/%d/')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+
+    def __str__(self):
+        return '間接リンク:[filter imgpk]{0}[end] 直接リンク:[filter img]{1}[end]'.format(self.pk, self.src.url)
+
+
+class File(models.Model):
+    """記事に紐づく添付ファイル"""
+
+    title = models.CharField('タイトル', max_length=255)
+    post = models.ForeignKey(
+        Post, verbose_name='記事', on_delete=models.PROTECT,
+    )
+    src = models.FileField('ファイル', upload_to='uploads/%Y/%m/%d/')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+
+    def __str__(self):
+        return self.title
+
+    def get_filename(self):
+        return os.path.basename(self.src.url)

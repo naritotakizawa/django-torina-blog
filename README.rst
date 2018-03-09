@@ -7,17 +7,15 @@ django-torina-blog
 .. image:: https://coveralls.io/repos/github/naritotakizawa/django-torina-blog/badge.svg
     :target: https://coveralls.io/github/naritotakizawa/django-torina-blog
 
-ブログ用のDjangoアプリケーションです。
-
 https://torina.top/
 
-
+ブログ用のDjangoアプリケーションです。大幅な更新をしたため、前のバージョンはタグ0.9のものを利用してください。
 
 Requirement
 --------------
 
 :Python: 3.5以上
-:Django: 1.10以上
+:Django: 2.0以上
 
 
 Quick start
@@ -26,11 +24,11 @@ Quick start
 
     pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/master.tar.gz
 
-2. settings.pyのINSTALLED_APPSに足す::
+2. settings.pyのINSTALLED_APPSに足し、SITE_ID=1も書く::
 
     INSTALLED_APPS = [
+        'blog.apps.BlogConfig',  # add
         ...
-        'blog',  # add
         'django.contrib.sites',
         'django.contrib.sitemaps',
     ]
@@ -65,13 +63,13 @@ Quick start
 5. ルートのurls.pyに足す::
 
 	urlpatterns = [
-	    url(r'^admin/', admin.site.urls),
-	    url(r'^blog/', include('blog.urls')),  # add
+	    path('admin/', admin.site.urls),
+	    path('', include('blog.urls')),  # add
 	]
 
-6. python manage.py migrate　でモデルを追加する.
+6. python manage.py migrate
 
-7. python manage.py runserver 等で動かし、http://127.0.0.1:8000/admin/ から記事やカテゴリを追加する
+7. python manage.py runserver 等で動かし、admin管理サイトのサイトモデルから、サイトのドメインやサイト詳細情報を入力後、記事やカテゴリを追加する。
 
 8. http://127.0.0.1:8000/blog/ で、表示されるのを確認する
 
