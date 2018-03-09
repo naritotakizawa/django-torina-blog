@@ -2,7 +2,6 @@
 from django.apps import AppConfig
 
 
-class TorinaBlogConfig(AppConfig):
+class BlogConfig(AppConfig):
     """AppConfig."""
-
     name = 'blog'

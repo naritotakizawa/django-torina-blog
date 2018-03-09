@@ -1,4 +1,5 @@
 """contet_processor."""
+from django.contrib.sites.models import Site
 from django.db.models import Count
 from .forms import PostSerachForm
 from .models import (
@@ -8,11 +9,11 @@ from .models import (
 
 
 def common(request):
-    """blogで使うcontextの設定."""
+    """共通contextの設定."""
     try:
         mysite = SiteDetail.objects.latest('pk')
     except SiteDetail.DoesNotExist:
-        mysite = None
+        mysite = SiteDetail.objects.create(site=Site.objects.get(pk=1))  # pk=1のSiteは必ずある
 
     context = {
         'categories': Category.objects.annotate(

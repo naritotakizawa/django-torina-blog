@@ -1,20 +1,46 @@
 {% extends "blog/custom_site.html" %}
 {% load static %}
 {% load blogfilter %}
-{% block meta_des %}{{post.title}} - {{ mysite.title }}{% endblock %}
+
+{% block meta_des %}
+  {% if post.description %}
+    {{ post.description }}
+  {% else %}
+    {{ post.title}} - {{ mysite.title }}
+  {% endif %}
+
+{% endblock %}
+
 {% block title %}{{post.title}} - {{ mysite.title }}{% endblock %}
+
 {% block extrajs %}
-   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
+{% endblock %}
+
+{% block extracss %}
+<style>
+    .prettyprint ol.linenums > li { list-style-type: decimal; }
+</style>
+{% endblock %}
+
+{% block bread%}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">記事一覧</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a></li>
+    <li class="breadcrumb-item">{{ post.title }}</li>
+  </ol>
+</nav>
 {% endblock %}
 
 
 {% block content %}
-<div class="card card-outline-primary">
-  <div class="card-header bg-primary">
+<div class="card">
+  <div class="card-header bg-{{ mysite.color }}">
     <h1 class="card-title text-white">{{ post.title }}</h1>
   </div>
 
-  <div class="card-block">
+  <div class="card-block p-2">
     <span class="badge badge-primary">
       <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
     </span>
@@ -24,7 +50,7 @@
       </span>
     {% endfor %}
     
-      <span class="badge badge-primary badge-pill">{% by_the_time post.created_at %}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
       <br>
       <span class="text-muted">{{ post.created_at }}</span>
 
@@ -35,14 +61,11 @@
     {% endif %}
     <hr>
     
-    {% if post.is_html %}
-      {{ post.text | safe}}
-    {% else %}
-      {{ post.text | linebreaksbr | blog }}
-    {% endif %}
+    {{ post.text | linebreaksbr | blog }}
   </div>
 
   <div class="card-footer">
+
     {% if post.get_prev %} 
     <p>前の記事
     <a href="{% url 'blog:detail' post.get_prev.pk %}">{{ post.get_prev.title }}</a>
@@ -55,12 +78,18 @@
     </p>
     {% endif %}
 
+    <p>添付ファイル</p>
+    {% for file in post.file_set.all %}
+       <p><a href="{{ file.src.url }}" download="{{ file.get_filename }}">{{ file.title }}</a></p>
+    {% endfor %}
+
     <p>関連記事</p>
     {% for post in post.friend_posts.all %}
       {% if post.is_publick %}
           <p><a href="{% url 'blog:detail' post.pk %}">{{ post.title }}</a></p>
       {% endif %}
-    {% endfor %}  
+    {% endfor %}    
+
   </div>
 </div>
 
@@ -107,7 +136,7 @@
 </div>
 
 <div class="text-center my-5">
-  <a class="btn btn-primary btn-lg" href="{% url 'blog:comment' post.pk %}" rel="nofollow">コメントページへ</a>
+  <a class="btn btn-{{ mysite.color }} btn-lg text-white" href="{% url 'blog:comment' post.pk %}" rel="nofollow">コメントページへ</a>
 </div>
 
 {% endblock %}

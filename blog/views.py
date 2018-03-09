@@ -4,7 +4,7 @@ from django.contrib.sitemaps import ping_google
 from django.urls import reverse_lazy
 from django.db.models import Q, Count
 from django.http import Http404
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from .forms import PostSerachForm, CommentCreateForm, ReCommentCreateForm
 from .models import Post, Comment, Tag, Category, ReComment
@@ -37,7 +37,6 @@ class PostIndexView(BaseListView):
             for word in keyword.split():
                 queryset = queryset.filter(
                     Q(title__icontains=word) | Q(text__icontains=word))
-
         return queryset
 
 
@@ -93,7 +92,7 @@ class PostDetailView(generic.DetailView):
     def get_object(self, queryset=None):
         """その記事が公開か、ユーザがログインしていればよし."""
         post = super().get_object()
-        if post.is_publick or self.request.user.is_authenticated():
+        if post.is_publick or self.request.user.is_authenticated:
             return post
         else:
             raise Http404
@@ -113,7 +112,7 @@ class CommentCreateView(generic.CreateView):
     def get_context_data(self, *args, **kwargs):
         """記事のpkを保持."""
         context = super().get_context_data(*args, **kwargs)
-        context['post_pk'] = self.kwargs['pk']
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
@@ -138,7 +137,8 @@ class ReCommentCreateView(generic.CreateView):
         comment = Comment.objects.get(pk=comment_pk)
 
         context = super().get_context_data(*args, **kwargs)
-        context['post_pk'] = comment.target.pk
+        post_pk = comment.target.pk
+        context['post'] = Post.objects.get(pk=post_pk)
         return context
 
     def form_valid(self, form):

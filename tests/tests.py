@@ -94,7 +94,7 @@ class TestViews(TestCase):
         """
         response = self.client.get(
             reverse('blog:comment', kwargs={'pk': 2}))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_private_get(self):
         """/private アクセスのテスト."""

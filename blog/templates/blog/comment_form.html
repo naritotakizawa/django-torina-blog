@@ -4,21 +4,30 @@
 {% block meta_des %}コメント投稿ページ - {{ mysite.title }}{% endblock %}
 {% block title %}{{ mysite.description }}{% endblock %}
 
+{% block bread%}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">記事一覧</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:detail' post.pk %}">{{ post.title }}</a></li>
+    <li class="breadcrumb-item">コメント</li>
+  </ol>
+</nav>
+{% endblock %}
 
 {% block content %}
+{{ form.non_field_errors }}
 <form action="" method="POST" enctype='multipart/form-data'>
   {% for field in form %}
     <div class="form-group">
       {{ field.errors }}
-      <label for="{{ field.id_for_label }}">
-        {{ field.label }}
-      </label>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
       {{ field }}
     </div>
   {% endfor %}
   {% csrf_token %}
-  <input class="btn btn-primary" type="submit" value="コメントする">
-  <a class="btn btn-primary" href="{% url 'blog:detail' post_pk %}" rel="nofollow">戻る</a>
+  <button class="btn btn-{{ mysite.color }}" type="submit">コメントする</button>
+  <a class="btn btn-{{ mysite.color }}" href="{% url 'blog:detail' post.pk %}" rel="nofollow">戻る</a>
 </form>
 
 {% endblock %}
