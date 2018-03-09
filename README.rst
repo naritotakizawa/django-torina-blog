@@ -9,8 +9,8 @@ django-torina-blog
 
 ブログ用のDjangoアプリケーションです。  大幅な更新をしたため、前のバージョンはタグ0.9のものを利用してください。  
 
-`実際に使っているブログ <https://torina.top>`
-`ちょっとした紹介 <https://torina.top/detail/447/>`
+`実際に使っているブログ <https://torina.top>`_
+`ちょっとした紹介 <https://torina.top/detail/447/>`_
 
 Requirement
 --------------
@@ -70,8 +70,8 @@ Quick start
     python manage.py migrate
     python manage.py runserver
 
-5. データを追加する
-admin管理サイトのサイトモデルから、ドメイン情報やサイト詳細情報を入力後、記事やカテゴリ、タグ等を実際に追加してください。
+5. データを追加する。admin管理サイトのサイトモデルから、ドメイン情報やサイト詳細情報を入力後、記事やカテゴリ、タグ等を実際に追加してください。
+
 
 
 過去1週間の人気記事を取得する場合(Google Analytics)
