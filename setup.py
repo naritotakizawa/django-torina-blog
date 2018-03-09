@@ -3,7 +3,7 @@ import sys
 from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst'), 'rb') as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as readme:
     README = readme.read()
 
 class DjangoTest(TestCommand):
@@ -27,7 +27,7 @@ setup(
     include_package_data=True,
     license='MIT License',
     description='Django Blog App',
-    long_description=README.decode(),
+    long_description=README,
     url='https://github.com/naritotakizawa/django-torina-blog',
     author='Narito Takizawa',
     author_email='toritoritorina@gmail.com',
