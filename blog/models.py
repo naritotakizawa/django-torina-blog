@@ -19,7 +19,6 @@ class Category(models.Model):
     """カテゴリー."""
 
     name = models.CharField('カテゴリ名', max_length=255)
-    description = models.TextField('概要', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
@@ -31,7 +30,6 @@ class Tag(models.Model):
     """タグ."""
 
     name = models.CharField('タグ名', max_length=255)
-    description = models.TextField('概要', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
