@@ -69,31 +69,25 @@ def img(text):
 
 def imgpk(text):
     """[filter imgpk]1[end]を、正しいimgタグにする
-    
+
     1の部分は、Imageモデルインスタンスのpkとなります。
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter imgpk]', '').replace('[end]', '')
+    if ',' in text:
+        pk, alt = text.split(',')
+    else:
+        pk, alt = text, ''
+
     try:
-        image = Image.objects.get(pk=int(text)).src.url
+        src = Image.objects.get(pk=int(pk)).src.url
     except Exception:
-        image = ''
+        tag = '<img src="">'
+    else:
         tag = (
             '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-            'class="img-fluid"/></a>'
-        ).format(image)
-    else:
-        if ',' in text:
-            src, alt = text.split(',')
-            tag = (
-                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-                'class="img-fluid" alt="{1}"></a>'
-            ).format(image, alt)
-        else:
-            tag = (
-                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-                'class="img-fluid"/></a>'
-            ).format(image)
+            'class="img-fluid" alt="{1}"></a>'
+        ).format(src, alt)
     return tag
 
 
