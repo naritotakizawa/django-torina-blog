@@ -40,26 +40,27 @@
     <h1 class="card-title text-white">{{ post.title }}</h1>
   </div>
 
-  <div class="card-block p-2">
-    <span class="badge badge-{{ mysite.color }}">
-      <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
-    </span>
-    {% for tag in post.tag.all %}
-      <span class="badge badge-{{ mysite.color }}">
-        <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
-      </span>
-    {% endfor %}
-    
+  <div class="card-body">
+      <span class="text-muted">{{ post.created_at }}</span>
       <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
       <br>
-      <span class="text-muted">{{ post.created_at }}</span>
 
-    {% if user.is_authenticated %}
-      <p>
+      <span class="badge badge-{{ mysite.color }}">
+        <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
+      </span>
+      <br>
+
+      {% for tag in post.tag.all %}
+        <span class="badge badge-{{ mysite.color }}">
+          <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
+        </span>
+      {% endfor %}
+      <hr>
+
+      {% if user.is_authenticated %}
         <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
-      </p>
-    {% endif %}
-    <hr>
+        <hr>
+      {% endif %}
     
     {{ post.text | linebreaksbr | blog }}
   </div>

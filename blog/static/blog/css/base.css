@@ -13,6 +13,9 @@ padding-top: 6rem;
 	height: 64px;
 }
 
+h1.card-title {
+  font-size: 2rem;
+}
 
 .midasi1 {
     border-left: 10px solid rgb(197,219,238);

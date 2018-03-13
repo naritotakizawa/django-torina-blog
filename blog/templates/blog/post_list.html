@@ -40,9 +40,9 @@
   {% for post in post_list %}
     <article class="mb-5 card">
       <div class="card-header bg-{{ mysite.color }}">
-        <h2 class="card-title text-white">{{ post.title }}</h2>
+        <h1 class="card-title text-white">{{ post.title }}</h1>
       </div>
-      <div class="card-block row p-2">
+      <div class="card-body row">
         <div class="col-xs-12 col-sm-6 text-center">
           {% if post.thumnail %}
             <a href="{{ post.thumnail.url }}" target="_blank" rel="nofollow"><img class="img-fluid" src="{{ post.thumnail.url }}"></a>
@@ -50,26 +50,31 @@
             <img class="img-fluid" src="{% static 'blog/img/noimage.png' %}">
           {% endif %}
         </div>
+
         <div class="col-xs-12 col-sm-6">
+          <span class="text-muted">{{ post.created_at }}</span>
+          <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
+          <br>
+
           <span class="badge badge-{{ mysite.color }}">
             <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
           </span>
+          <br>
 
           {% for tag in post.tag.all %}
             <span class="badge badge-{{ mysite.color }}">
               <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
             </span>
           {% endfor %}
-          <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
+          <hr>
+
+          <a class="btn btn-outline-{{ mysite.color }} btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
           <br>
-          <span class="text-muted">{{ post.created_at }}</span>
 
           {% if user.is_authenticated %}
-            <p>
-              <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
-            </p>
+            <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
           {% endif %}
-          <a class="btn btn-outline-{{ mysite.color }} btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
+          
         </div>
       </div>
     </article>
