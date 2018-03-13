@@ -35,17 +35,17 @@
 
 
 {% block content %}
-<div class="card">
+<article class="card">
   <div class="card-header bg-{{ mysite.color }}">
     <h1 class="card-title text-white">{{ post.title }}</h1>
   </div>
 
   <div class="card-block p-2">
-    <span class="badge badge-primary">
+    <span class="badge badge-{{ mysite.color }}">
       <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
     </span>
     {% for tag in post.tag.all %}
-      <span class="badge badge-success">
+      <span class="badge badge-{{ mysite.color }}">
         <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
       </span>
     {% endfor %}
@@ -91,7 +91,7 @@
     {% endfor %}    
 
   </div>
-</div>
+</article>
 
 <div id="comment-area">
 <!-- コメント一覧 -->

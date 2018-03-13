@@ -1,7 +1,16 @@
 {% extends "blog/custom_site.html" %}
 {% load static %}
 {% load blogfilter %}
-{% block meta_des %}{{ mysite.description }}{% endblock %}
+
+{% block meta_des %}
+    {% if tag %}
+      {{ mysite.title }}の、タグ: {{ tag.name }} の検索結果一覧です。
+    {% elif category %}
+      {{ mysite.title }}の、カテゴリー: {{ category.name }} の検索結果一覧です。
+    {% else %}
+        {{ mysite.description }}
+    {% endif %}
+{% endblock %}
 
 {% block title %}
     {% if tag %}
@@ -29,7 +38,7 @@
 {% block content %}
 
   {% for post in post_list %}
-    <div class="mb-5 card">
+    <article class="mb-5 card">
       <div class="card-header bg-{{ mysite.color }}">
         <h2 class="card-title text-white">{{ post.title }}</h2>
       </div>
@@ -42,12 +51,12 @@
           {% endif %}
         </div>
         <div class="col-xs-12 col-sm-6">
-          <span class="badge badge-info">
+          <span class="badge badge-{{ mysite.color }}">
             <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
           </span>
 
           {% for tag in post.tag.all %}
-            <span class="badge badge-success">
+            <span class="badge badge-{{ mysite.color }}">
               <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
             </span>
           {% endfor %}
@@ -63,7 +72,7 @@
           <a class="btn btn-outline-{{ mysite.color }} btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
         </div>
       </div>
-    </div>
+    </article>
   {% endfor %}
 
   {% include "blog/page.html" %}

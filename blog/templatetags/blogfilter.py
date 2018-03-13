@@ -53,10 +53,17 @@ def img(text):
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter img]', '').replace('[end]', '')
-    tag = (
-        '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-        'class="img-fluid"/></a>'
-    ).format(text)
+    if ',' in text:
+        src, alt = text.split(',')
+        tag = (
+            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+            'class="img-fluid" alt="{1}"></a>'
+        ).format(src, alt)
+    else:
+        tag = (
+            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+            'class="img-fluid"/></a>'
+        ).format(text)
     return tag
 
 

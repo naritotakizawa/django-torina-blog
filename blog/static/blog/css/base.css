@@ -2,7 +2,7 @@ body {
 	background-color: #fff;
 }
 
-div.jumbotron {
+.jumbotron {
 	background-color: #fff;
 	border-bottom: .05rem solid #eee;
 }
