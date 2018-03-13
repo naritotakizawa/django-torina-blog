@@ -78,10 +78,22 @@ def imgpk(text):
         image = Image.objects.get(pk=int(text)).src.url
     except Exception:
         image = ''
-    tag = (
-        '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-        'class="img-fluid"/></a>'
-    ).format(image)
+        tag = (
+            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+            'class="img-fluid"/></a>'
+        ).format(image)
+    else:
+        if ',' in text:
+            src, alt = text.split(',')
+            tag = (
+                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+                'class="img-fluid" alt="{1}"></a>'
+            ).format(image, alt)
+        else:
+            tag = (
+                '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
+                'class="img-fluid"/></a>'
+            ).format(image)
     return tag
 
 
