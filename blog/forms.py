@@ -4,7 +4,7 @@ from .models import Comment, ReComment
 
 
 class PostSerachForm(forms.Form):
-    """記事検索フォーム."""
+    """記事検索フォーム"""
 
     keyword = forms.CharField(
         label='キーワード', required=False,
@@ -14,11 +14,9 @@ class PostSerachForm(forms.Form):
 
 
 class CommentCreateForm(forms.ModelForm):
-    """コメント投稿フォーム."""
+    """コメント投稿フォーム"""
 
     class Meta:
-        """Meta."""
-
         model = Comment
         fields = ('name', 'text', 'icon')
         widgets = {
@@ -35,11 +33,9 @@ class CommentCreateForm(forms.ModelForm):
 
 
 class ReCommentCreateForm(forms.ModelForm):
-    """返信コメント投稿フォーム."""
+    """返信コメント投稿フォーム"""
 
     class Meta:
-        """Meta."""
-
         model = ReComment
         fields = ('name', 'text', 'icon')
         widgets = {

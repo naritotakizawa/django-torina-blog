@@ -22,7 +22,7 @@
     {% endif %}
 {% endblock %}
 
-{% block bread%}
+{% block bread %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">記事一覧</a></li>
@@ -39,18 +39,22 @@
 
   {% for post in post_list %}
     <article class="mb-5 card">
+
       <div class="card-header bg-{{ mysite.color }}">
         <h1 class="card-title text-white">{{ post.title }}</h1>
-      </div>
+      </div><!-- card-header終了 -->
+
       <div class="card-body row">
+        <!-- card-bodyの左側 -->
         <div class="col-xs-12 col-sm-6 text-center">
           {% if post.thumnail %}
             <a href="{{ post.thumnail.url }}" target="_blank" rel="nofollow"><img class="img-fluid" src="{{ post.thumnail.url }}"></a>
           {% else %}
             <img class="img-fluid" src="{% static 'blog/img/noimage.png' %}">
           {% endif %}
-        </div>
+        </div><!-- card-bodyの左側終わり -->
 
+        <!-- card-bodyの右側 -->
         <div class="col-xs-12 col-sm-6">
           <span class="text-muted">{{ post.created_at }}</span>
           <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
@@ -74,9 +78,9 @@
           {% if user.is_authenticated %}
             <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
           {% endif %}
-          
-        </div>
-      </div>
+        </div><!-- card-bodyの右側おわり -->
+
+      </div><!-- card-body終了 -->
     </article>
   {% endfor %}
 

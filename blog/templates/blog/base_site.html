@@ -7,6 +7,7 @@
 {% endblock %}
 
 
+<!-- グローバルナビゲーション -->
 {% block nav %}
 <nav class="navbar navbar fixed-top navbar-expand-lg navbar-dark bg-{{ mysite.color }}">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +44,10 @@
   </div>
 </nav>
 {% endblock %}
+<!-- グローバルナビゲーション終わり -->
 
+
+<!-- ヘッダー -->
 {% block header %}
 <header class="jumbotron">
   <div class="container">
@@ -54,17 +58,24 @@
   </div>
 </header>
 {% endblock %}
+<!-- ヘッダー終了 -->
+
 
 {% block main %}
 <div class="container">
    {% block bread %}{% endblock %}
   <div class="row">
+
+    <!-- 左側のメインコンテンツ -->
     <main class="col-12 col-sm-8">
       {% block content %}
       {% endblock %}
-    </main><!-- メインコンテンツ -->
+    </main><!-- メインコンテンツ終了 -->
 
+    <!-- 右側のサイドバー -->
     <aside class="col-12 col-sm-3 offset-sm-1">
+
+      <!-- コメント一覧 -->
       <div class="list-group">
         <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           All Category
@@ -74,8 +85,9 @@
           {{ category.name }}<span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{{ category.num_posts }}</span>
         </a>
         {% endfor %}
-      </div>
+      </div><!-- コメント一覧終了 -->
 
+      <!-- タグ一覧 -->
       <div class="list-group mt-5">
         <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Tag
@@ -88,8 +100,9 @@
         <a href="{% url 'blog:tag_list' %}" class="list-group-item">
           >>> 全てのタグを見る
         </a>
-      </div>
+      </div><!-- タグ一覧終了 -->
 
+      <!-- リンク一覧 -->
       <div class="list-group my-5">
         <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Link
@@ -99,8 +112,9 @@
             {{ link.name }}
         </a>
         {% endfor %}
-      </div>
-  
+      </div> <!-- リンク一覧終了 -->
+
+       <!-- コメント一覧 -->
       <div class="hidden-sm-down list-group my-5">
         <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
           Comment
@@ -111,12 +125,15 @@
             <span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{% by_the_time comment.created_at %}</span>
         </a>
         {% endfor %}    
-      
-      </div>
+      </div> <!-- コメント一覧終了 -->
+
+      <!-- 広告一覧 -->  
       {% for ad in ads %}
         {{ ad.html | safe }}
-      {% endfor %}
-    </aside><!-- /サイドバー -->
+      {% endfor %}<!-- 広告一覧終了 -->
+
+    </aside><!-- /サイドバー終了 -->
+
   </div><!-- /.row -->
 
  {% if popular_post_list %}
@@ -130,12 +147,14 @@
           {{ popular.title }} - {{ popular.page_view }}View
       </a>
       {% endfor %}
-  </aside><!-- 過去の人気記事一覧 -->
+  </aside><!-- 過去の人気記事一覧終了 -->
   {% endif %}
 
 </div>
 {% endblock %}
 
+
+<!-- フッター -->
 {% block footer %}
 <footer class="text-center bg-{{ mysite.color }}">
   <div class="container">
@@ -144,9 +163,13 @@
   </div>
 </footer>
 {% endblock %}
+<!-- フッター終了 -->
 
+
+<!-- アナリティクス -->
 {% block analytics %}
   {% for anal in analytics %}
     {{ anal.html | safe }}
   {% endfor %}
 {% endblock %}
+<!-- アナリティクス終わり -->

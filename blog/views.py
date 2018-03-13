@@ -11,8 +11,7 @@ from .models import Post, Comment, Tag, Category, ReComment
 
 
 class BaseListView(generic.ListView):
-    """記事の一覧表示の基底クラス."""
-
+    """記事の一覧表示の基底クラス"""
     paginate_by = 10
 
     def get_queryset(self):
@@ -23,10 +22,10 @@ class BaseListView(generic.ListView):
 
 
 class PostIndexView(BaseListView):
-    """トップページ、クイックサーチ."""
+    """トップページ、クイックサーチ"""
 
     def get_queryset(self):
-        """クイックサーチの絞り込み."""
+        """クイックサーチの絞り込み"""
         global_form = PostSerachForm(self.request.GET)
         global_form.is_valid()
         keyword = global_form.cleaned_data['keyword']
@@ -41,56 +40,55 @@ class PostIndexView(BaseListView):
 
 
 class PostPrivateIndexView(LoginRequiredMixin, BaseListView):
-    """非公開の記事一覧."""
+    """非公開の記事一覧"""
 
     def get_queryset(self):
-        """公開フラグがFalse、作成日順."""
+        """公開フラグがFalse、作成日順"""
         queryset = Post.objects.filter(
             is_publick=False).order_by('-created_at')
         return queryset
 
 
 class CategoryView(BaseListView):
-    """カテゴリのリンククリック."""
+    """カテゴリのリンククリック"""
 
     def get_queryset(self):
-        """カテゴリでの絞り込み."""
+        """カテゴリでの絞り込み"""
         category_name = self.kwargs['category']
         self.category = Category.objects.get(name=category_name)
         queryset = super().get_queryset().filter(category=self.category)
         return queryset
 
     def get_context_data(self, *args, **kwargs):
-        """クリックされたカテゴリを保持."""
+        """クリックされたカテゴリを保持"""
         context = super().get_context_data(*args, **kwargs)
         context['category'] = self.category
         return context
 
 
 class TagView(BaseListView):
-    """タグのリンククリック."""
+    """タグのリンククリック"""
 
     def get_queryset(self):
-        """タグで絞り込み."""
+        """タグで絞り込み"""
         tag_name = self.kwargs['tag']
         self.tag = Tag.objects.get(name=tag_name)
         queryset = super().get_queryset().filter(tag=self.tag)
         return queryset
 
     def get_context_data(self, *args, **kwargs):
-        """クリックされたタグを保持."""
+        """クリックされたタグを保持"""
         context = super().get_context_data(*args, **kwargs)
         context['tag'] = self.tag
         return context
 
 
 class PostDetailView(generic.DetailView):
-    """記事詳細ページ."""
-
+    """記事詳細ページ"""
     model = Post
 
     def get_object(self, queryset=None):
-        """その記事が公開か、ユーザがログインしていればよし."""
+        """その記事が公開か、ユーザがログインしていればよし"""
         post = super().get_object()
         if post.is_publick or self.request.user.is_authenticated:
             return post
@@ -99,24 +97,23 @@ class PostDetailView(generic.DetailView):
 
 
 class CommentCreateView(generic.CreateView):
-    """コメント投稿画面.
+    """コメント投稿画面
 
     '^comment/(?P<pk>[0-9]+)/$'のようにして、記事のpkも受け取っている
     このpkをcontextへ渡し前へ戻るリンクに利用したり、targetに指定する記事を取得するのに使う
 
     """
-
     model = Comment
     form_class = CommentCreateForm
 
     def get_context_data(self, *args, **kwargs):
-        """記事のpkを保持."""
+        """記事のpkを保持"""
         context = super().get_context_data(*args, **kwargs)
         context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
-        """記事をコメントのtargetに指定."""
+        """記事をコメントのtargetに指定"""
         post_pk = self.kwargs['pk']
         self.object = form.save(commit=False)
         self.object.target = Post.objects.get(pk=post_pk)
@@ -125,14 +122,14 @@ class CommentCreateView(generic.CreateView):
 
 
 class ReCommentCreateView(generic.CreateView):
-    """返信コメント投稿."""
+    """返信コメント投稿"""
 
     model = ReComment
     form_class = ReCommentCreateForm
     template_name = 'blog/comment_form.html'
 
     def get_context_data(self, *args, **kwargs):
-        """記事のpkを保持."""
+        """記事のpkを保持"""
         comment_pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=comment_pk)
 
@@ -142,7 +139,7 @@ class ReCommentCreateView(generic.CreateView):
         return context
 
     def form_valid(self, form):
-        """元コメントを返信コメントのtargetに指定."""
+        """元コメントを返信コメントのtargetに指定"""
         comment_pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=comment_pk)
 
@@ -156,7 +153,7 @@ class ReCommentCreateView(generic.CreateView):
 
 
 class TagListView(generic.ListView):
-    """タグの一覧ビュー."""
+    """タグの一覧ビュー"""
 
     model = Tag
     queryset = Tag.objects.annotate(
@@ -165,7 +162,7 @@ class TagListView(generic.ListView):
 
 @login_required
 def ping(request):
-    """Googleへpingを送信する."""
+    """Googleへpingを送信する"""
     try:
         url = reverse_lazy('blog:sitemap')
         ping_google(sitemap_url=url)

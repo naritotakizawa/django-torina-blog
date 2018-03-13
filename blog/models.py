@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 
 
+# サイト詳細情報のテーマカラーの選択肢
 SITE_COLORS = (
     ('primary', '青色'),
     ('secondary', '灰色'),
@@ -16,8 +17,7 @@ SITE_COLORS = (
 
 
 class Category(models.Model):
-    """カテゴリー."""
-
+    """カテゴリー"""
     name = models.CharField('カテゴリ名', max_length=255)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
@@ -27,8 +27,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    """タグ."""
-
+    """タグ"""
     name = models.CharField('タグ名', max_length=255)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
@@ -38,8 +37,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    """ブログのポスト."""
-
+    """記事"""
     title = models.CharField('タイトル', max_length=255)
     text = models.TextField('本文')
     category = models.ForeignKey(
@@ -54,11 +52,10 @@ class Post(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.title
 
     def get_next(self):
-        """次の記事."""
+        """次の記事を取得する(日付)"""
         next_post = Post.objects.filter(
             is_publick=True, created_at__gt=self.created_at
         ).order_by('-created_at')
@@ -67,7 +64,7 @@ class Post(models.Model):
         return None
 
     def get_prev(self):
-        """前の記事."""
+        """前の記事を取得する(日付)"""
         prev_post = Post.objects.filter(
             is_publick=True, created_at__lt=self.created_at
         ).order_by('-created_at')
@@ -77,8 +74,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    """コメント."""
-
+    """コメント"""
     name = models.CharField('名前', max_length=255, default='名無し')
     text = models.TextField('コメント')
     icon = models.ImageField(
@@ -88,13 +84,11 @@ class Comment(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.text[:10]
 
 
 class ReComment(models.Model):
-    """返信コメント."""
-
+    """返信コメント"""
     name = models.CharField('名前', max_length=255, default='名無し')
     text = models.TextField('コメント')
     icon = models.ImageField(
@@ -104,49 +98,41 @@ class ReComment(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.text[:10]
 
 
 class Link(models.Model):
-    """リンク."""
-
+    """リンク"""
     name = models.CharField('リンク名', max_length=255)
     adrs = models.CharField('アドレス', max_length=255)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.name
 
 
 class Analytics(models.Model):
-    """アナリティクスの情報."""
-
+    """アナリティクスの情報"""
     name = models.CharField('アナリティクス', max_length=255, blank=True)
     html = models.TextField('アナリティクスHTML', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.name
 
 
 class Ads(models.Model):
-    """広告関連."""
-
+    """広告関連"""
     name = models.CharField('広告名', max_length=255, blank=True)
     html = models.TextField('広告HTML', blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.name
 
 
 class SiteDetail(models.Model):
-    """サイトの詳細."""
-
+    """サイトの詳細情報"""
     site = models.OneToOneField(Site, verbose_name='Site', on_delete=models.PROTECT)
     title = models.CharField('タイトル', max_length=255, default='サンプルのタイトル')
     description = models.CharField('サイトの説明', max_length=255, default='サンプルの説明')
@@ -156,13 +142,11 @@ class SiteDetail(models.Model):
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
-        """str."""
         return self.author
 
 
 class PopularPost(models.Model):
-    """人気記事."""
-
+    """人気記事"""
     title = models.CharField('タイトル', max_length=255)
     url = models.CharField('URL', max_length=255)
     page_view = models.IntegerField('ページビュー数')
@@ -174,7 +158,6 @@ class PopularPost(models.Model):
 
 class Image(models.Model):
     """記事に紐づく画像ファイル"""
-
     post = models.ForeignKey(
         Post, verbose_name='記事', on_delete=models.PROTECT,
     )
@@ -187,7 +170,6 @@ class Image(models.Model):
 
 class File(models.Model):
     """記事に紐づく添付ファイル"""
-
     title = models.CharField('タイトル', max_length=255)
     post = models.ForeignKey(
         Post, verbose_name='記事', on_delete=models.PROTECT,
@@ -199,4 +181,5 @@ class File(models.Model):
         return self.title
 
     def get_filename(self):
+        """ファイル名を取得する"""
         return os.path.basename(self.src.url)

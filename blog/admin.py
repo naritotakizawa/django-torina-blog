@@ -8,31 +8,36 @@ from .models import (
 
 
 class SiteDetailInline(admin.StackedInline):
+    """サイト詳細情報のインライン"""
     model = SiteDetail
 
 
 class SiteAdmin(admin.ModelAdmin):
+    """Siteモデルを、管理画面でSiteDetailもインラインで表示できるように"""
     inlines = [SiteDetailInline]
 
 
 class ImageInline(admin.TabularInline):
+    """記事内画像のインライン"""
     model = Image
     extra = 3
 
 
 class FileInline(admin.TabularInline):
+    """記事内添付ファイルのインライン"""
     model = File
     extra = 3
 
 
 class PostAdmin(admin.ModelAdmin):
+    """記事を、管理画面で画像とファイルもインラインで埋め込む"""
     inlines = [ImageInline, FileInline]
 
 
 admin.autodiscover()  # Siteアプリのadmin.pyを頑張って探す
 admin.site.unregister(Site)  # インラインにするため一度解除
-admin.site.register(Site, SiteAdmin)  # インライン!
-admin.site.register(Post, PostAdmin)
+admin.site.register(Site, SiteAdmin)  # インライン
+admin.site.register(Post, PostAdmin)  # インライン
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Link)
