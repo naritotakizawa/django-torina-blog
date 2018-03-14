@@ -3,7 +3,6 @@ import html.parser
 import re
 
 from django import template
-from django.template.defaultfilters import urlize
 from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe, SafeData
@@ -23,8 +22,13 @@ def url(text):
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter url]', '').replace('[end]', '')
-    tag = urlize(text)
-    tag = tag.replace('<a ', '<a target="_blank" rel="nofollow" ')
+    if ',' in text:
+        url, text = text.split(',')
+        tag = '<a href="{0}" target="_blank" rel="nofollow">{1}</a>'.format(
+            url, text)
+    else:
+        url = text
+        tag = '<a href="{0}" target="_blank" rel="nofollow">{0}</a>'.format(url)
     return tag
 
 
