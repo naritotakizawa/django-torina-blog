@@ -41,8 +41,8 @@
   </div>
 
   <div class="card-body">
-      <span class="text-muted">{{ post.created_at }}</span>
-      <span class="badge badge-{{ mysite.color }} badge-pill text-white">{% by_the_time post.created_at %}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time post.created_at %}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill">{{ post.created_at }}</span>
       <br>
 
       <span class="badge badge-{{ mysite.color }}">
@@ -105,9 +105,9 @@
   {% endif %}
   <div class="media-body">
     <h5 class="mt-0">
-      <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time comment.created_at %}</span>
       {{ comment.name }}
-      <span class="lead text-muted">{{ comment.created_at }}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time comment.created_at %}</span>
+      <span class="badge badge-{{ mysite.color }} badge-pill">{{ comment.created_at }}</span>
       <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
     </h5>
     {{ comment.text | linebreaksbr }}
@@ -121,9 +121,9 @@
           {% endif %}
           <div class="media-body">
             <h5 class="mt-0">
-              <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
               {{ recomment.name }}
-              <span class="lead text-muted">{{ recomment.created_at }}</span>
+              <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
+              <span class="badge badge-{{ mysite.color }} badge-pill">{{ recomment.created_at }}</span>
             </h5>
             {{ recomment.text | linebreaksbr }}
           </div>
