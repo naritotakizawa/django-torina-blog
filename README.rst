@@ -7,7 +7,7 @@ django-torina-blog
 .. image:: https://coveralls.io/repos/github/naritotakizawa/django-torina-blog/badge.svg
     :target: https://coveralls.io/github/naritotakizawa/django-torina-blog
 
-ブログ用のDjangoアプリケーションです。  大幅な更新をしたため、前のバージョンはタグ0.9のものを利用してください。  
+ブログ用のDjangoアプリケーションです。  前のバージョンはタグ0.9やタグ1.0のものを利用してください。  
 
 `実際に使っているブログ <https://torina.top>`_
 `ちょっとした紹介 <https://torina.top/detail/447/>`_
@@ -30,8 +30,8 @@ Quick start
     INSTALLED_APPS = [
         'blog.apps.BlogConfig',  # add
         ...
-        'django.contrib.sites',
-        'django.contrib.sitemaps',
+        'django.contrib.sites',  # add
+        'django.contrib.sitemaps',  # add
     ]
     
     SITE_ID = 1  # add
@@ -55,6 +55,7 @@ Quick start
     ]
     ...
     ...
+    # 各種メディアファイル
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
 
@@ -64,6 +65,10 @@ Quick start
         path('admin/', admin.site.urls),
         path('', include('blog.urls')),  # add
     ]
+
+    # 開発環境でのメディアファイルの配信設定
+    if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 4. 動かす::
 
@@ -76,6 +81,8 @@ Quick start
 
 過去1週間の人気記事を取得する場合(Google Analytics)
 ----------------------------------------------------------
+`参考1 <https://torina.top/detail/357/>`_
+`参考2 <https://torina.top/detail/355/>`_
 
 1. インストールする::
 

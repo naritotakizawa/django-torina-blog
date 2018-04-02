@@ -120,8 +120,7 @@ def quote(text):
 
     """
     text = text.replace('[filter quote]', '').replace('[end]', '')
-    tag = '<blockquote class="blockquote"><p>{}</p></blockquote>'.format(
-        text)
+    tag = '<blockquote class="blockquote"><p>{}</p></blockquote>'.format(text)
     return tag
 
 
@@ -147,26 +146,23 @@ def midasi1(text):
 
 @register.filter(is_safe=True, needs_autoescape=True)
 def blog(value, autoescape=True):
-    """[spam]ham[end]のような文字列を、適切なHTMLタグに変換する.
+    """本文中の[filter name]text[end]を、適切なHTMLタグに変換する.
 
-    >>> blog('[filter html]<h1>Hello</h1>[end]')
-    '<h1>Hello</h1>'
-
-    >>> blog('[filter html]<h1>Hello</h1>[end]\
-    [filter url]https://torina.top[end]')
-
-    '<h1>Hello</h1><a target="_blank" rel="nofollow" \
-    href="https://torina.top" rel="nofollow">https://torina.top</a>'
-
+    url、html、img といった別の関数へ処理を渡します。
+    ここで行うのは、[filter name]text[end]が本文にあるかをチェックし
+    あれば、別関数にそれらを渡して結果テキストの取得、
+    その後、元の[filter name]text[end]を結果テキスト(html)に置き換えます。
     """
     autoescape = autoescape and not isinstance(value, SafeData)
     if autoescape:
         value = escape(value)
+    # [filter name]text[end]を探す
     filters = re.finditer(r'\[filter (?P<tag_name>.*?)\].*?\[end\]', value)
     results = []
     for f in filters:
-        filter_name = f.group('tag_name')
-        origin_text = f.group()
+        filter_name = f.group('tag_name')  # name部分、urlやimg等の関数名が入る
+        origin_text = f.group()  # text部分
+        # 関数の取得と、呼び出し
         filter_function = globals().get(filter_name)
         if filter_function and callable(filter_function):
             result_text = filter_function(origin_text)
@@ -174,6 +170,7 @@ def blog(value, autoescape=True):
             result_text = origin_text
         results.append((origin_text, result_text))
 
+    # 元の[filter..]を、結果htmlと置き換えていく
     for origin_text, result_text in results:
         if origin_text != result_text:
             value = value.replace(origin_text, result_text)

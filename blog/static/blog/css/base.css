@@ -1,16 +1,16 @@
 body {
-	background-color: #fff;
-padding-top: 6rem;
+  background-color: #fff;
+  padding-top: 6rem;
 }
 
 .jumbotron {
-	background-color: #fff;
-	border-bottom: .05rem solid #eee;
+  background-color: #fff;
+  border-bottom: .05rem solid #eee;
 }
 
 .icon {
-	width: 64px;
-	height: 64px;
+  width: 64px;
+  height: 64px;
 }
 
 h1.card-title {
@@ -18,23 +18,23 @@ h1.card-title {
 }
 
 .midasi1 {
-    border-left: 10px solid rgb(197,219,238);
-    border-bottom: 1px solid rgb(197,219,238);
-    margin-top: 26px;
-    padding-left: 7px;
-    padding-bottom: 4px;
+  border-left: 10px solid rgb(197,219,238);
+  border-bottom: 1px solid rgb(197,219,238);
+  margin-top: 26px;
+  padding-left: 7px;
+  padding-bottom: 4px;
 }
 
 footer {
- 	padding-top: 3rem;
- 	padding-bottom: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 footer p {
-	margin-bottom: .25rem;
+  margin-bottom: .25rem;
 }
 
 footer a {
-	color: blue;
-	text-decoration: underline;
+  color: blue;
+  text-decoration: underline;
 }
