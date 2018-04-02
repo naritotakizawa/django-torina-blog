@@ -1,3 +1,4 @@
+"""古いバージョンのブログを使っている方は、こちらのスクリプトで修正ができます。"""
 import os
 import re
 import django

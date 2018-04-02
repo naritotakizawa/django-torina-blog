@@ -25,16 +25,16 @@ h1.card-title {
   padding-bottom: 4px;
 }
 
-footer {
+body > footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
 
-footer p {
+body > footer p {
   margin-bottom: .25rem;
 }
 
-footer a {
+body > footer a {
   color: blue;
   text-decoration: underline;
 }

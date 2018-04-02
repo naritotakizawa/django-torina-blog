@@ -118,7 +118,13 @@ def quote(text):
 
     """
     text = text.replace('[filter quote]', '').replace('[end]', '')
-    tag = '<blockquote class="blockquote"><p>{}</p></blockquote>'.format(text)
+    if SPLIT_CHAR in text:
+        p_text, footer_text = text.split(SPLIT_CHAR)
+        footer_tag = '<footer class="blockquote-footer">{0}</footer>'.format(footer_text)
+        tag = '<blockquote class="blockquote"><p class="mb-0">{}</p>{}</blockquote>'.format(p_text, footer_tag)
+    else:
+        p_text = text
+        tag = '<blockquote class="blockquote"><p class="mb-0">{}</p></blockquote>'.format(p_text)
     return tag
 
 
