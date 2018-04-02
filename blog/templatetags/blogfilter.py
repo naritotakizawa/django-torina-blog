@@ -126,23 +126,10 @@ def quote(text):
     return tag
 
 
-def midasi1(text):
-    """<span class="midasi1">文字</span>に置き換える.
-
-    .midasi1 {
-        border-left: 10px solid rgb(197,219,238);
-        border-bottom: 1px solid rgb(197,219,238);
-        margin-top: 26px;
-        padding-left: 7px;
-        padding-bottom: 4px;
-    }
-
-    >>> midasi1('[filter midasi1]H1 String[end]')
-    '<p class="midasi1">H1 String</p>'
-
-    """
-    text = text.replace('[filter midasi1]', '').replace('[end]', '')
-    tag = '<p class="midasi1">{0}</p>'.format(text)
+def h2(text):
+    """<h2 class="blog-h2">文字</h2>に置き換える."""
+    text = text.replace('[filter h2]', '').replace('[end]', '')
+    tag = '<h2 class="blog-h2">{0}</p>'.format(text)
     return tag
 
 

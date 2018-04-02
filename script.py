@@ -26,6 +26,13 @@ def change_comma_to_split():
             post.save()
 
 
+def change_midasi1_to_h2():
+    """[filter midasi1]text[end]→[filter h2]text[end]"""
+    for post in Post.objects.all():
+        if '[filter midasi1]' in post.text:
+            post.text = post.text.replace('[filter midasi1]', '[filter h2]')
+            post.save()
+
 
 if __name__ == '__main__':
     pass
