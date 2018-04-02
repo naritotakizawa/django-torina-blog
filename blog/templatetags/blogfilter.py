@@ -10,7 +10,7 @@ from blog.models import Image
 
 register = template.Library()
 html_parser = html.parser.HTMLParser()
-
+SPLIT_CHAR = '<split>'
 
 def url(text):
     """[filter url]http://...[end]を、aタグして解釈する.
@@ -22,8 +22,8 @@ def url(text):
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter url]', '').replace('[end]', '')
-    if ',' in text:
-        url, text = text.split(',')
+    if SPLIT_CHAR in text:
+        url, text = text.split(SPLIT_CHAR)
         tag = '<a href="{0}" target="_blank" rel="nofollow">{1}</a>'.format(
             url, text)
     else:
@@ -57,8 +57,8 @@ def img(text):
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter img]', '').replace('[end]', '')
-    if ',' in text:
-        src, alt = text.split(',')
+    if SPLIT_CHAR in text:
+        src, alt = text.split(SPLIT_CHAR)
         tag = (
             '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
             'class="img-fluid" alt="{1}"></a>'
@@ -78,8 +78,8 @@ def imgpk(text):
     """
     text = text.replace('<br />', '\n')
     text = text.replace('[filter imgpk]', '').replace('[end]', '')
-    if ',' in text:
-        pk, alt = text.split(',')
+    if SPLIT_CHAR in text:
+        pk, alt = text.split(SPLIT_CHAR)
     else:
         pk, alt = text, ''
 
