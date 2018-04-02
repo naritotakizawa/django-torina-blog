@@ -1,4 +1,5 @@
 """blogアプリで主に使用するフィルタ."""
+import html
 import html.parser
 import re
 
@@ -10,7 +11,8 @@ from blog.models import Image
 
 register = template.Library()
 html_parser = html.parser.HTMLParser()
-SPLIT_CHAR = '<split>'
+SPLIT_CHAR = html.escape('<split>')
+
 
 def url(text):
     """[filter url]http://...[end]を、aタグして解釈する.
