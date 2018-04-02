@@ -97,17 +97,13 @@ def imgpk(text):
     return tag
 
 
-def cord(text):
+def code(text):
     """<pre>コード</pre>に置き換える.
 
     google-code-prettyfyに合わせたタグです
-
-    >>> cord('[filter cord]hello<br />narito[end]')
-    '<pre class="prettyprint linenums">hello\\nnarito</pre>'
-
     """
     text = text.replace('<br />', '\n')
-    text = text.replace('[filter cord]', '').replace('[end]', '')
+    text = text.replace('[filter code]', '').replace('[end]', '')
     tag = '<pre class="prettyprint linenums">{}</pre>'.format(text)
     return tag
 

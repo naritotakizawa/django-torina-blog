@@ -34,5 +34,12 @@ def change_midasi1_to_h2():
             post.save()
 
 
+def change_cord_to_code():
+    """[filter midasi1]text[end]→[filter h2]text[end]"""
+    for post in Post.objects.all():
+        if '[filter cord]' in post.text:
+            post.text = post.text.replace('[filter cord]', '[filter code]')
+            post.save()
+
 if __name__ == '__main__':
     pass
