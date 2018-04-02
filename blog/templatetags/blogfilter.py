@@ -129,7 +129,7 @@ def quote(text):
 def h2(text):
     """<h2 class="blog-h2">文字</h2>に置き換える."""
     text = text.replace('[filter h2]', '').replace('[end]', '')
-    tag = '<h2 class="blog-h2">{0}</p>'.format(text)
+    tag = '<h2 class="blog-h2">{0}</h2>'.format(text)
     return tag
 
 
