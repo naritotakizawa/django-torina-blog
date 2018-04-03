@@ -51,7 +51,7 @@ html_parser = html.parser.HTMLParser()
 SPLIT_CHAR = html.escape('<split>')
 
 
-def url(text):
+def url(text, index):
     """[filter url]href[end]を、aタグして解釈する."""
     text = text.replace('<br />', '')
     text = text.replace('[filter url]', '').replace('[end]', '')
@@ -65,7 +65,7 @@ def url(text):
     return tag
 
 
-def html(text):
+def html(text, index):
     """[filter html]your_html[end]を、そのままHTMLとして解釈する."""
     text = text.replace('<br />', '\n')
     text = text.replace('[filter html]', '').replace('[end]', '')
@@ -73,7 +73,7 @@ def html(text):
     return tag
 
 
-def img(text):
+def img(text, index):
     """[filter img]src[end]を、正しいimgタグにする
 
     Bootstrap4に合わせたimgタグです、img-fluidを使います。
@@ -94,7 +94,7 @@ def img(text):
     return tag
 
 
-def imgpk(text):
+def imgpk(text, index):
     """[filter imgpk]1[end]を、正しいimgタグにする
 
     1の部分は、Imageモデルインスタンスのpkとなります。それ以外はimg関数と同様です。
@@ -118,7 +118,7 @@ def imgpk(text):
     return tag
 
 
-def code(text):
+def code(text, index):
     """[filter code]コード[end]を<pre>コード</pre>に置き換える.
 
     google-code-prettyfyに合わせたタグです
@@ -129,7 +129,7 @@ def code(text):
     return tag
 
 
-def quote(text):
+def quote(text, index):
     """[filter quote]文字[end]を<blockquote>文字</blockquote>に置き換える.
 
     Bootstrap4用の<blockquote>に置き換えます。
@@ -145,17 +145,17 @@ def quote(text):
     return tag
 
 
-def h2(text):
+def h2(text, index):
     """[filter h2]文字[end]を<h2 class="blog-h2">文字</h2>に置き換える."""
     text = text.replace('[filter h2]', '').replace('[end]', '')
-    tag = '<h2 class="blog-h2">{0}</h2>'.format(text)
+    tag = '<h2 class="blog-h2" id="{}">{}</h2>'.format(index, text)
     return tag
 
 
-def h3(text):
+def h3(text, index):
     """[filter h3]文字[end]を<h3 class="blog-h3">文字</h3>に置き換える."""
     text = text.replace('[filter h3]', '').replace('[end]', '')
-    tag = '<h3 class="blog-h3">{0}</h3>'.format(text)
+    tag = '<h3 class="blog-h3" id="{}">{}</h3>'.format(index, text)
     return tag
 
 
@@ -175,13 +175,14 @@ def blog(value, autoescape=True):
     # [filter name]text[end]を探す
     filters = re.finditer(r'\[filter (?P<tag_name>.*?)\].*?\[end\]', value)
     results = []
-    for f in filters:
+    # iは、何個目の[filter..]か。h2、h3等で目次を作るのに使う。
+    for i, f in enumerate(filters, 1):
         filter_name = f.group('tag_name')  # name部分、urlやimg等の関数名が入る
         origin_text = f.group()  # text部分
         # 関数の取得と、呼び出し
         filter_function = globals().get(filter_name)
         if filter_function and callable(filter_function):
-            result_text = filter_function(origin_text)
+            result_text = filter_function(origin_text, i)
         else:
             result_text = origin_text
         results.append((origin_text, result_text))

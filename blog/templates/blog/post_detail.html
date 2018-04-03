@@ -22,13 +22,16 @@
 {% endblock %}
 
 {% block content %}
+<!-- 目次部分 -->
+<div id="toc"></div>
+
+<!-- 記事詳細部分 -->
 <article class="card">
-  <!-- 記事詳細部分 -->
   {% include 'blog/widgets/detail_card.html' %}
 </article>
 
+<!-- コメント一覧 -->
 <div id="comment-area">
-  <!-- コメント一覧 -->
   {% for comment in post.comment_set.all %}
     {% include 'blog/widgets/detail_comment.html' %}
   {% endfor %}
@@ -57,4 +60,15 @@
   {% else %}
     {% static 'blog/img/noimage.png' %}
   {% endif %}
+{% endblock %}
+
+{% block extrajs %}
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
+<script src="{% static 'blog/js/toc.js' %}"></script>
+{% endblock %}
+
+{% block extracss %}
+<style>
+    .prettyprint ol.linenums > li { list-style-type: decimal; }
+</style>
 {% endblock %}

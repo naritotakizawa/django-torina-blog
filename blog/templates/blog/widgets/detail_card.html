@@ -1,15 +1,4 @@
-{% load static %}
 {% load blogfilter %}
-
-{% block extrajs %}
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
-{% endblock %}
-
-{% block extracss %}
-<style>
-    .prettyprint ol.linenums > li { list-style-type: decimal; }
-</style>
-{% endblock %}
 
 <div class="card-header bg-{{ mysite.color }}">
   <h1 class="card-title text-white">{{ post.title }}</h1>
