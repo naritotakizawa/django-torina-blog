@@ -43,25 +43,6 @@
 
 {% endblock %}
 
-{% block twitter_card %}summary{% endblock %}"
-{% block twitter_user %}@toritoritorina{% endblock %}
-{% block twitter_url %}{{ request.build_absolute_uri }}{% endblock %}
-{% block twitter_title %}{{ post.title }} {% endblock %}
-{% block twitter_des %}
-  {% if post.description %}
-    {{ post.description }}
-  {% else %}
-    {{ post.title}} - {{ mysite.title }}
-  {% endif %}
-{% endblock %}
-{% block twitter_img %}
-  {% if post.thumnail %}
-    {{ post.thumnail.url }}
-  {% else %}
-    {% static 'blog/img/noimage.png' %}
-  {% endif %}
-{% endblock %}
-
 {% block extrajs %}
 <script src="{% static 'blog/js/toc.js' %}"></script>
 {% endblock %}
