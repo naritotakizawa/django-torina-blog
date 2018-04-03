@@ -17,7 +17,7 @@ SITE_COLORS = (
 
 DEFAULT_HEADER_TEXT = """\
 このブログはDjangoとBootstrap4で作成されました
-[filter url]https://github.com/naritotakizawa/django-torina-blog<split>Githubのソースコード[end]\
+[filter url]https://github.com/naritotzawa/django-torina-blog<split>Githubのソースコード[end]\
 """
 
 

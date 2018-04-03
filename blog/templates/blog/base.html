@@ -10,7 +10,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% block icon %}{% endblock %}
+    {% block icon %}<link rel="shortcut icon" href="{% static 'blog/img/favicon.ico' %}">{% endblock %}
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -22,17 +22,7 @@
 
   </head>
   <body>
-    {% block nav %}
-    {% endblock %}
-
-    {% block header %}
-    {% endblock %}
-
-    {% block main %}
-    {% endblock %}
-
-    {% block footer %}
-    {% endblock %}
+    {% block layout %}{% endblock %}
 
   <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -41,9 +31,15 @@
 
   <!-- Custom JS -->
   <script src="{% static 'blog/js/base.js' %}"></script>
-
-  {% block analytics %}{% endblock %}
   {% block extrajs %}{% endblock %}
 
+  {% block analytics %}
+    <!-- アナリティクス -->
+      {% for anal in analytics %}
+        {{ anal.html | safe }}
+      {% endfor %}
+    <!-- アナリティクス終わり -->
+  {% endblock %}
+  
   </body>
 </html>

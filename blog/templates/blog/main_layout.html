@@ -1,0 +1,37 @@
+{% extends 'blog/layout.html' %}
+
+{% block main %}
+<div class="container">
+   {% block bread %}{% endblock %}
+  <div class="row">
+    <!-- 左側のメインコンテンツ -->
+    <main class="col-12 col-sm-8">
+      {% block content %}
+      {% endblock %}
+    </main><!-- メインコンテンツ終了 -->
+
+    <!-- 右側のサイドバー -->
+    <aside class="col-12 col-sm-3 offset-sm-1">
+      <!-- カテゴリ一覧 -->
+      {% include 'blog/widgets/side_category.html' %}
+
+      <!-- タグ一覧 -->
+      {% include 'blog/widgets/side_tag.html' %}
+
+      <!-- リンク一覧 -->
+      {% include 'blog/widgets/side_link.html' %}
+
+       <!-- コメント一覧 -->
+       {% include 'blog/widgets/side_comment.html' %}
+
+      <!-- 広告一覧 -->  
+      {% for ad in ads %}
+        {{ ad.html | safe }}
+      {% endfor %}<!-- 広告一覧終了 -->
+    </aside><!-- /サイドバー終了 -->
+  </div><!-- /.row -->
+
+  <!-- 人気記事一覧 -->
+  {% include 'blog/widgets/popular_post_list.html' %}
+</div>
+{% endblock %}

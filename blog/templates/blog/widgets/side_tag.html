@@ -1,0 +1,13 @@
+<div class="list-group mt-5">
+  <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
+    Tag
+  </a>
+  {% for tag in tags  %}
+  <a class="list-group-item" href="{% url 'blog:tag' tag.name %}">
+      {{ tag.name }}<span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{{ tag.num_posts }}</span>
+  </a>
+  {% endfor %}
+  <a href="{% url 'blog:tag_list' %}" class="list-group-item">
+    >>> 全てのタグを見る
+  </a>
+</div><!-- タグ一覧終了 -->

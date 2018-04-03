@@ -1,0 +1,10 @@
+<div class="list-group">
+  <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
+    All Category
+  </a>
+  {% for category in categories %}
+  <a class="list-group-item" href="{% url 'blog:category' category.name %}">
+    {{ category.name }}<span class="badge badge-{{ mysite.color }} badge-pill float-right text-white">{{ category.num_posts }}</span>
+  </a>
+  {% endfor %}
+</div>

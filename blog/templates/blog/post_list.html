@@ -1,6 +1,4 @@
-{% extends "blog/custom_site.html" %}
-{% load static %}
-{% load blogfilter %}
+{% extends "blog/main_layout.html" %}
 
 {% block meta_des %}
     {% if tag %}
@@ -36,54 +34,10 @@
 {% endblock %}
 
 {% block content %}
-
   {% for post in post_list %}
     <article class="mb-5 card">
-
-      <div class="card-header bg-{{ mysite.color }}">
-        <h1 class="card-title text-white">{{ post.title }}</h1>
-      </div><!-- card-header終了 -->
-
-      <div class="card-body row">
-        <!-- card-bodyの左側 -->
-        <div class="col-xs-12 col-sm-6 text-center">
-          {% if post.thumnail %}
-            <a href="{{ post.thumnail.url }}" target="_blank" rel="nofollow"><img class="img-fluid" src="{{ post.thumnail.url }}"></a>
-          {% else %}
-            <img class="img-fluid" src="{% static 'blog/img/noimage.png' %}">
-          {% endif %}
-        </div><!-- card-bodyの左側終わり -->
-
-        <!-- card-bodyの右側 -->
-        <div class="col-xs-12 col-sm-6">
-          <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time post.created_at %}</span>
-          <span class="badge badge-{{ mysite.color }} badge-pill">{{ post.created_at }}</span>
-          <br>
-
-          <span class="badge badge-{{ mysite.color }}">
-            <a class="text-white" href="{% url 'blog:category' post.category.name %}">{{ post.category.name }}</a>
-          </span>
-          <br>
-
-          {% for tag in post.tag.all %}
-            <span class="badge badge-{{ mysite.color }}">
-              <a class="text-white" href="{% url 'blog:tag' tag.name %}">{{ tag.name }}</a>
-            </span>
-          {% endfor %}
-          <hr>
-
-          <a class="btn btn-outline-{{ mysite.color }} btn-lg btn-block" href="{% url 'blog:detail' post.pk %}">続きを読む</a>
-          <br>
-
-          {% if user.is_authenticated %}
-            <a href="{% url 'admin:blog_post_change' post.pk %}">管理画面へ</a>
-          {% endif %}
-        </div><!-- card-bodyの右側おわり -->
-
-      </div><!-- card-body終了 -->
+      {% include 'blog/widgets/list_card.html' %}
     </article>
   {% endfor %}
-
-  {% include "blog/page.html" %}
-
+  {% include "blog/widgets/page.html" %}
 {% endblock %}

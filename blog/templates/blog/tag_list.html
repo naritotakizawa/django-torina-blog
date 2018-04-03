@@ -1,4 +1,4 @@
-{% extends "blog/custom_site.html" %}
+{% extends "blog/main_layout.html" %}
 {% load static %}
 {% load blogfilter %}
 {% block meta_des %}{{ mysite.title }}のタグ一覧ページです。{% endblock %}
@@ -15,11 +15,7 @@
 
 {% block content %}
   {% for tag in tag_list %}
-    <p>
-        <a href="{% url 'blog:tag' tag.name %}">
-            {{ tag.name }}({{ tag.num_posts }})
-        </a>
-    </p>
+    <p><a href="{% url 'blog:tag' tag.name %}">{{ tag.name }}({{ tag.num_posts }})</a></p>
     <hr>
   {% endfor %}
 {% endblock %}
