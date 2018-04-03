@@ -135,6 +135,13 @@ def h2(text):
     return tag
 
 
+def h3(text):
+    """<h3 class="blog-h3">文字</h3>に置き換える."""
+    text = text.replace('[filter h3]', '').replace('[end]', '')
+    tag = '<h3 class="blog-h3">{0}</h3>'.format(text)
+    return tag
+
+
 @register.filter(is_safe=True, needs_autoescape=True)
 def blog(value, autoescape=True):
     """本文中の[filter name]text[end]を、適切なHTMLタグに変換する.

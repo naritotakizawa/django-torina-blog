@@ -25,6 +25,15 @@ h1.card-title {
   padding-bottom: 4px;
 }
 
+.blog-h3 {
+  border-left: 10px solid rgb(197,219,238);
+  border-bottom: 1px solid rgb(197,219,238);
+  margin-top: 26px;
+  padding-left: 7px;
+  padding-bottom: 4px;
+  font-size: 1rem;
+}
+
 body > footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
