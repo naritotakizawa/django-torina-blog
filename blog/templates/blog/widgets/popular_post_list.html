@@ -1,6 +1,6 @@
  {% if popular_post_list %}
 <!-- 過去の人気記事一覧 -->
-<aside class="list-group my-5 col-12">
+<div class="list-group my-5 col-12">
     <a href="#" class="list-group-item text-white bg-{{ mysite.color }}">
       過去1週間の人気記事
     </a>
@@ -9,5 +9,5 @@
         {{ popular.title }} - {{ popular.page_view }}View
     </a>
     {% endfor %}
-</aside><!-- 過去の人気記事一覧終了 -->
+</div><!-- 過去の人気記事一覧終了 -->
 {% endif %}
