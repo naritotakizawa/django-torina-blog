@@ -1,4 +1,41 @@
-"""blogアプリで主に使用するフィルタ."""
+"""blogアプリで主に使用するフィルタ・タグ
+
+by_the_timeタグ
+人に優しい表現で、文字列を返す(n時間前)
+<span class="badge badge-danger badge-pill">{% by_the_time recomment.created_at %}</span>
+のようにして使います。
+
+url_replaceタグ
+キーワード検索をした際等の、他GETパラメータと?page=のページングを両立させる場合に使います。
+<a href="?{% url_replace request 'page' page_obj.previous_page_number %}" aria-label="Previous">
+のようにして使います。
+
+blogフィルター
+{{ post.text | linebreaksbr | blog }}
+のようにして使います。
+
+投稿画面での、[filter name]text[end]という特殊な構文を評価するためのフィルター
+blogアプリケーションでは、linebreaksbrでの自動改行と、blogフィルターでの特殊構文評価を使っています。
+linebreaksbrは便利ですが、自動生成された<br />タグが一部の処理で邪魔になっています。
+
+[filter img]
+http://...
+[end]
+
+linebreaksによって、以下のようになります。
+
+[filter img]<br>
+http://...<br>
+[end]<br>
+
+[filter img]を正しくimgタグにするには、[filter img]内の<br>を消す必要があります。
+同様に、[filter imgpk]や[filter url]も<br />が消されます。
+
+[filter html]や[filter code]などは、<br />を\nにすることで、元々のhtmlやプログラミングコードの形を保っています。
+
+[filter h2]や[filter h3]、[filter quote]など、内部に<br />があってもおかしくない場合は、<br />をそのままにしています。
+"""
+
 import html
 import html.parser
 import re
@@ -15,14 +52,8 @@ SPLIT_CHAR = html.escape('<split>')
 
 
 def url(text):
-    """[filter url]http://...[end]を、aタグして解釈する.
-
-    >>> url('[filter url]https://torina.top[end]')
-    '<a target="_blank" rel="nofollow" href="https://torina.top" \
-    rel="nofollow">https://torina.top</a>'
-
-    """
-    text = text.replace('<br />', '\n')
+    """[filter url]href[end]を、aタグして解釈する."""
+    text = text.replace('<br />', '')
     text = text.replace('[filter url]', '').replace('[end]', '')
     if SPLIT_CHAR in text:
         url, text = text.split(SPLIT_CHAR)
@@ -35,12 +66,7 @@ def url(text):
 
 
 def html(text):
-    """[filter html]your_html[end]を、そのままHTMLとして解釈する.
-
-    >>> html('[filter html]&lt;h1&gt;ヘロー&lt;/h1&gt;[end]')
-    '<h1>ヘロー</h1>'
-
-    """
+    """[filter html]your_html[end]を、そのままHTMLとして解釈する."""
     text = text.replace('<br />', '\n')
     text = text.replace('[filter html]', '').replace('[end]', '')
     tag = html_parser.unescape(text)
@@ -48,16 +74,11 @@ def html(text):
 
 
 def img(text):
-    """http://spam.png等の画像URLを、imgタグに置換する.
+    """[filter img]src[end]を、正しいimgタグにする
 
-    Bootstrap4に合わせたタグです
-
-    >>> img('[filter img]https://torina.top/a.png[end]')
-    '<a href="https://torina.top/a.png" target="_blank" rel="nofollow">\
-    <img src="https://torina.top/a.png" class="img-fluid"/></a>'
-
+    Bootstrap4に合わせたimgタグです、img-fluidを使います。
     """
-    text = text.replace('<br />', '\n')
+    text = text.replace('<br />', '')
     text = text.replace('[filter img]', '').replace('[end]', '')
     if SPLIT_CHAR in text:
         src, alt = text.split(SPLIT_CHAR)
@@ -76,9 +97,9 @@ def img(text):
 def imgpk(text):
     """[filter imgpk]1[end]を、正しいimgタグにする
 
-    1の部分は、Imageモデルインスタンスのpkとなります。
+    1の部分は、Imageモデルインスタンスのpkとなります。それ以外はimg関数と同様です。
     """
-    text = text.replace('<br />', '\n')
+    text = text.replace('<br />', '')
     text = text.replace('[filter imgpk]', '').replace('[end]', '')
     if SPLIT_CHAR in text:
         pk, alt = text.split(SPLIT_CHAR)
@@ -98,7 +119,7 @@ def imgpk(text):
 
 
 def code(text):
-    """<pre>コード</pre>に置き換える.
+    """[filter code]コード[end]を<pre>コード</pre>に置き換える.
 
     google-code-prettyfyに合わせたタグです
     """
@@ -109,13 +130,9 @@ def code(text):
 
 
 def quote(text):
-    """<blockquote>文字</blockquote>に置き換える.
+    """[filter quote]文字[end]を<blockquote>文字</blockquote>に置き換える.
 
-    Bootstrap4にあわせたタグです
-
-    >>> quote('[filter quote]narito[end]')
-    '<blockquote class="blockquote"><p>narito</p></blockquote>'
-
+    Bootstrap4用の<blockquote>に置き換えます。
     """
     text = text.replace('[filter quote]', '').replace('[end]', '')
     if SPLIT_CHAR in text:
@@ -129,14 +146,14 @@ def quote(text):
 
 
 def h2(text):
-    """<h2 class="blog-h2">文字</h2>に置き換える."""
+    """[filter h2]文字[end]を<h2 class="blog-h2">文字</h2>に置き換える."""
     text = text.replace('[filter h2]', '').replace('[end]', '')
     tag = '<h2 class="blog-h2">{0}</h2>'.format(text)
     return tag
 
 
 def h3(text):
-    """<h3 class="blog-h3">文字</h3>に置き換える."""
+    """[filter h3]文字[end]を<h3 class="blog-h3">文字</h3>に置き換える."""
     text = text.replace('[filter h3]', '').replace('[end]', '')
     tag = '<h3 class="blog-h3">{0}</h3>'.format(text)
     return tag
@@ -146,6 +163,7 @@ def h3(text):
 def blog(value, autoescape=True):
     """本文中の[filter name]text[end]を、適切なHTMLタグに変換する.
 
+    直前にlinebreaksbrを使ってください。(linebreaksbrで生成された<br />を利用するため)
     url、html、img といった別の関数へ処理を渡します。
     ここで行うのは、[filter name]text[end]が本文にあるかをチェックし
     あれば、別関数にそれらを渡して結果テキストの取得、
@@ -178,27 +196,10 @@ def blog(value, autoescape=True):
 
 @register.simple_tag
 def url_replace(request, field, value):
-    """GETパラメータを一部を置き換える."""
+    """GETパラメータの一部を置き換える."""
     url_dict = request.GET.copy()
     url_dict[field] = value
     return url_dict.urlencode()
-
-
-@register.simple_tag
-def hilight(text, key_word):
-    """ハイライトした文章を返す.
-
-    >>> hilight('oh my oh', 'oh')
-    '<span class="under-line">oh</span> my <span class="under-line">oh</span>'
-
-    """
-    result = text
-    case = (key_word, key_word.title(), key_word.capitalize())
-    for word in case:
-        html_tag = '<span class="under-line">{0}</span>'.format(word)
-        result = result.replace(word, html_tag)
-
-    return result
 
 
 @register.simple_tag
