@@ -1,10 +1,87 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Note: To use the 'upload' functionality of this file, you must:
+#   $ pip install twine
+
+import io
 import os
 import sys
-from setuptools import find_packages, setup
+from shutil import rmtree
+from setuptools import find_packages, setup, Command
 from setuptools.command.test import test as TestCommand
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst'), 'r', encoding='utf-8') as readme:
-    README = readme.read()
+# Package meta-data.
+NAME = 'django-torina-blog'
+DESCRIPTION = 'simple blog app for Django'
+URL = 'https://github.com/naritotakizawa/django-torina-blog'
+EMAIL = 'toritoritorina@gmail.com'
+AUTHOR = 'Narito Takizawa'
+REQUIRES_PYTHON = '>=3.5.0'
+VERSION = '2.0.0'
+
+# What packages are required for this module to be executed?
+REQUIRED = [
+    'pillow',
+]
+
+# The rest you shouldn't have to touch too much :)
+# ------------------------------------------------
+# Except, perhaps the License and Trove Classifiers!
+# If you do change the License, remember to change the Trove Classifier for that!
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+# Import the README and use it as the long-description.
+# Note: this will only work if 'README.rst' is present in your MANIFEST.in file!
+with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = '\n' + f.read()
+
+# Load the package's __version__.py module as a dictionary.
+about = {}
+if not VERSION:
+    with open(os.path.join(here, SORCE_DIR, '__version__.py')) as f:
+        exec(f.read(), about)
+else:
+    about['__version__'] = VERSION
+
+
+class UploadCommand(Command):
+    """Support setup.py upload."""
+
+    description = 'Build and publish the package.'
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in bold."""
+        print('\033[1m{0}\033[0m'.format(s))
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        try:
+            self.status('Removing previous builds…')
+            rmtree(os.path.join(here, 'dist'))
+        except OSError:
+            pass
+
+        self.status('Building Source and Wheel (universal) distribution…')
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+
+        self.status('Uploading the package to PyPi via Twine…')
+        os.system('twine upload dist/*')
+
+        self.status('Pushing git tags…')
+        os.system('git tag v{0}'.format(about['__version__']))
+        os.system('git push --tags')
+        
+        sys.exit()
+
 
 class DjangoTest(TestCommand):
 
@@ -20,29 +97,34 @@ class DjangoTest(TestCommand):
         failures = test_runner.run_tests(['tests'])
         sys.exit(bool(failures))
 
+
+# Where the magic happens:
 setup(
-    name='django-torina-blog',
-    version='1.0',
+    name=NAME,
+    version=about['__version__'],
+    description=DESCRIPTION,
+    long_description=long_description,
+    author=AUTHOR,
+    author_email=EMAIL,
+    python_requires=REQUIRES_PYTHON,
+    url=URL,
     packages=find_packages(exclude=('tests','project')),
+    install_requires=REQUIRED,
     include_package_data=True,
-    license='MIT License',
-    description='Django Blog App',
-    long_description=README,
-    url='https://github.com/naritotakizawa/django-torina-blog',
-    author='Narito Takizawa',
-    author_email='toritoritorina@gmail.com',
+    license='MIT',
     classifiers=[
-        'Environment :: Web Environment',
-        'Framework :: Django',
-        'Framework :: Django :: 2.0',
-        'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Framework :: Django',
+        'Framework :: Django :: 2.0',
+        'Intended Audience :: Developers',
     ],
-    cmdclass = {'test': DjangoTest},
-    install_requires=['pillow'],
+    # $ setup.py publish support.
+    cmdclass={
+        'upload': UploadCommand,
+        'test': DjangoTest,
+    },
 )

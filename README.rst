@@ -7,7 +7,7 @@ django-torina-blog
 .. image:: https://coveralls.io/repos/github/naritotakizawa/django-torina-blog/badge.svg
     :target: https://coveralls.io/github/naritotakizawa/django-torina-blog
 
-ブログ用のDjangoアプリケーションです。  前のバージョンはタグ0.9やタグ1.0のものを利用してください。  
+ブログ用のDjangoアプリケーションです。
 
 `実際に使っているブログ <https://torina.top>`_
 `ちょっとした紹介 <https://torina.top/detail/447/>`_
