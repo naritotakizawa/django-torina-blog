@@ -15,6 +15,11 @@ SITE_COLORS = (
     ('dark', '黒'),
 )
 
+DEFAULT_HEADER_TEXT = """\
+このブログはDjangoとBootstrap4で作成されました
+[filter url]https://github.com/naritotakizawa/django-torina-blog<split>Githubのソースコード[end]\
+"""
+
 
 class Category(models.Model):
     """カテゴリー"""
@@ -135,6 +140,7 @@ class SiteDetail(models.Model):
     """サイトの詳細情報"""
     site = models.OneToOneField(Site, verbose_name='Site', on_delete=models.PROTECT)
     title = models.CharField('タイトル', max_length=255, default='サンプルのタイトル')
+    header_text = models.TextField('ヘッダーのテキスト', max_length=255, default=DEFAULT_HEADER_TEXT)
     description = models.CharField('サイトの説明', max_length=255, default='サンプルの説明')
     author = models.CharField('管理者', max_length=255, default='サンプルの管理者')
     author_mail = models.EmailField('管理者アドレス', max_length=255, default='your_mail@gmail.com')
@@ -161,7 +167,7 @@ class Image(models.Model):
     post = models.ForeignKey(
         Post, verbose_name='記事', on_delete=models.PROTECT,
     )
-    src = models.ImageField('画像', upload_to='uploads/%Y/%m/%d/')
+    src = models.ImageField('画像', upload_to='uploads/%Y/%m/%d/', help_text='送信後、一度保存してください。')
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
