@@ -22,6 +22,7 @@ h1.card-title {
   margin-top: 26px;
   padding-left: 7px;
   padding-bottom: 4px;
+  margin-bottom: 0;
 }
 
 .blog-h3 {
@@ -31,6 +32,7 @@ h1.card-title {
   padding-left: 7px;
   padding-bottom: 4px;
   font-size: 1rem;
+  margin-bottom: 0;
 }
 
 body > footer {
