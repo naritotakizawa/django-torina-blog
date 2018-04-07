@@ -11,6 +11,7 @@ manage.py
 
 project/
 media/
+static/
 dist/
 build/
 django_torina_blog.egg-info/
