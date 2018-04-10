@@ -1,7 +1,12 @@
 {% load blogfilter %}
 {% load static %}
 <style>
-    .prettyprint ol.linenums > li { list-style-type: decimal; }
+    pre.prettyprint {
+      white-space: pre;
+    }
+    .prettyprint ol.linenums > li {
+      list-style-type: decimal; 
+    }
 </style>
 <div class="card">
   <div class="card-header bg-{{ mysite.color }}">
@@ -61,4 +66,4 @@
   
   </div>
 </div>
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
