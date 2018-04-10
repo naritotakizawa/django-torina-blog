@@ -1,38 +1,42 @@
 {% load blogfilter %}
 {% load static %}
-<div class="media m-3">
-  {% if comment.icon %}
-    <img class="d-flex mr-3 icon" src="{{ comment.icon.url }}">
-  {% else %}
-    <img class="d-flex mr-3 icon" src="{% static 'blog/img/noimage.png' %}">
-  {% endif %}
-  <div class="media-body">
-    <h5 class="mt-0">
-      {{ comment.name }}
-      <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time comment.created_at %}</span>
-      <span class="badge badge-{{ mysite.color }} badge-pill">{{ comment.created_at }}</span>
-      <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
-    </h5>
-    {{ comment.text | linebreaksbr }}
-    <!-- 返信コメント -->
-    {% for recomment in comment.recomment_set.all %}
-        <div class="media m-3">
-          {% if recomment.icon %}
-            <img class="d-flex mr-3 icon" src="{{ recomment.icon.url }}">
-          {% else %}
-            <img class="d-flex mr-3 icon" src="{% static 'blog/img/noimage.png' %}">
-          {% endif %}
-          <div class="media-body">
-            <h5 class="mt-0">
-              {{ recomment.name }}
-              <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
-              <span class="badge badge-{{ mysite.color }} badge-pill">{{ recomment.created_at }}</span>
-            </h5>
-            {{ recomment.text | linebreaksbr }}
+<div class="row mt-3">
+  <div class="col-md-2 d-none d-md-block">
+    {% if comment.icon %}
+      <img class="img-fluid" src="{{ comment.icon.url }}">
+    {% else %}
+      <img class="img-fluid" src="{% static 'blog/img/noimage.png' %}">
+    {% endif %}
+  </div>
+  <div class="col-md-10">
+      <h5>
+        {{ comment.name }}
+        <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time comment.created_at %}</span>
+        <span class="badge badge-{{ mysite.color }} badge-pill">{{ comment.created_at }}</span>
+        <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
+      </h5>
+      {{ comment.text | linebreaksbr }}
+      <!-- 返信コメント -->
+      {% for recomment in comment.recomment_set.all %}
+        <div class="row mt-3">
+          <div class="col-md-2 d-none d-md-block">
+            {% if recomment.icon %}
+              <img class="img-fluid" src="{{ recomment.icon.url }}">
+            {% else %}
+              <img class="img-fluid" src="{% static 'blog/img/noimage.png' %}">
+            {% endif %}
           </div>
-        </div>    
-
-    {% endfor %}
-    <!-- 返信コメントおわり -->
+          <div class="col-md-10">
+              <h5>
+                {{ recomment.name }}
+                <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
+                <span class="badge badge-{{ mysite.color }} badge-pill">{{ recomment.created_at }}</span>
+              </h5>
+              {{ recomment.text | linebreaksbr }}
+        
+          </div>
+        </div>
+      {% endfor %}
+      <!-- 返信コメントおわり -->
   </div>
 </div>
