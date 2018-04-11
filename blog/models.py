@@ -59,6 +59,16 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_description(self):
+        if self.description:
+            return self.description
+        else:
+            description = 'カテゴリ:{0} タグ:{1}'
+            category = self.category
+            tags = ' '.join(tag.name for tag in self.tag.all())
+            description = description.format(category, tags)
+            return description
+
     def get_next(self):
         """次の記事を取得する(日付)"""
         next_post = Post.objects.filter(

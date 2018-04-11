@@ -2,11 +2,7 @@
 {% load static %}
 
 {% block meta_des %}
-  {% if post.description %}
-    {{ post.description }}
-  {% else %}
-    {{ post.title}} - {{ mysite.title }}
-  {% endif %}
+  {{ post.get_description }}
 {% endblock %}
 
 {% block title %}{{post.title}} - {{ mysite.title }}{% endblock %}

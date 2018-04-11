@@ -5,7 +5,7 @@ from .models import Post, SiteDetail
 
 try:
     site_detail = SiteDetail.objects.latest('pk')
-except:
+except Exception:
     title = ''
     description = ''
 else:
@@ -32,14 +32,7 @@ class LatestEntriesFeed(Feed):
     def item_description(self, item):
         """記事の説明."""
         # 記事の説明フィールドがあればそれを、なければカテゴリとタグ名を
-        if item.description:
-            return item.description
-        else:
-            message = 'カテゴリ:{0} タグ:{1}'
-            category = item.category
-            tags = ' '.join(tag.name for tag in item.tag.all())
-            message = message.format(category, tags)
-            return message
+        return item.get_description()
 
     def item_link(self, item):
         """記事へのリンク."""
