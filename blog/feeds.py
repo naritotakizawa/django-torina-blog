@@ -1,18 +1,26 @@
-"""feedに関するモジュール."""
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.urls import reverse, reverse_lazy
 from .models import Post, SiteDetail
 
-mysite = SiteDetail.objects.get(site__pk=settings.SITE_ID)
-
 
 class LatestEntriesFeed(Feed):
     """最新記事feed."""
 
-    title = mysite.title
     link = reverse_lazy('blog:index')
-    description = mysite.description
+
+    @property
+    def site(self):
+        """サイト詳細情報の遅延ロード"""
+        if not hasattr(self, '_site'):
+            self._site = SiteDetail.objects.get(site__pk=settings.SITE_ID)
+        return self._site
+
+    def title(self):
+        return self.site.title
+
+    def description(self):
+        return self.site.description
 
     def items(self):
         """記事一覧."""

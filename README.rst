@@ -61,6 +61,11 @@ Quick start
 
 3. プロジェクトのurls.pyに足す::
 
+    from django.conf import settings
+    from django.contrib import admin
+    from django.urls import path, include
+    from django.conf.urls.static import static
+
     urlpatterns = [
         path('admin/', admin.site.urls),
         path('', include('blog.urls')),  # add
@@ -74,6 +79,7 @@ Quick start
 
     python manage.py migrate
     python manage.py runserver
+    python manage.py createsuperuser
 
 5. データを追加する。admin管理サイトのサイトモデルから、ドメイン情報やサイト詳細情報を入力後、記事やカテゴリ、タグ等を実際に追加してください。
 

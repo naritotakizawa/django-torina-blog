@@ -8,10 +8,12 @@
 
 db.sqlite3
 manage.py
+manage2.py
 Pipfile
 Pipfile.lock
 
 project/
+project2/
 media/
 static/
 dist/

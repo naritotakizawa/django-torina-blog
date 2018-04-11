@@ -1,15 +1,17 @@
 from django.contrib.sites.shortcuts import get_current_site
+from django.conf import settings
 from django.db.models import Count
 from .forms import PostSerachForm
 from .models import (
     Category, Tag, Link, Analytics, Ads, Comment,
-    PopularPost,
+    PopularPost, SiteDetail,
 )
 
 
 def common(request):
     """どのテンプレートにも渡すデータの作成"""
-    mysite = get_current_site(request).sitedetail
+    site = get_current_site(request)
+    mysite, _ = SiteDetail.objects.get_or_create(site=site)
     context = {
         # カテゴリを紐付いた記事数順に取得。category.num_postsで件数が取得可
         'categories': Category.objects.annotate(
