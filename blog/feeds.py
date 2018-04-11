@@ -1,6 +1,6 @@
 """feedに関するモジュール."""
 from django.contrib.syndication.views import Feed
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .models import Post, SiteDetail
 
 try:
@@ -17,7 +17,7 @@ class LatestEntriesFeed(Feed):
     """最新記事feed."""
 
     title = title
-    link = '/'
+    link = reverse_lazy('blog:index')
     description = description
 
     def items(self):

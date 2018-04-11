@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db.models import Count
 from .forms import PostSerachForm
@@ -13,8 +14,8 @@ def common(request):
     try:
         mysite = SiteDetail.objects.latest('pk')
     except SiteDetail.DoesNotExist:
-        # pk=1のSiteは必ずある。settings.pyで設定済み
-        mysite = SiteDetail.objects.create(site=Site.objects.get(pk=1))
+        # settings.pyで設定したSITE_ID
+        mysite = SiteDetail.objects.create(site=Site.objects.get(pk=settings.SITE_ID))
 
     context = {
         # カテゴリを紐付いた記事数順に取得。category.num_postsで件数が取得可
