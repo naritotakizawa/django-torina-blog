@@ -1,3 +1,4 @@
+from django.contrib.sites.models import Site
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.urls import reverse, reverse_lazy
@@ -13,7 +14,9 @@ class LatestEntriesFeed(Feed):
     def site(self):
         """サイト詳細情報の遅延ロード"""
         if not hasattr(self, '_site'):
-            self._site = SiteDetail.objects.get(site__pk=settings.SITE_ID)
+            site = Site.objects.get(pk=settings.SITE_ID)
+            mysite, _ = SiteDetail.objects.get_or_create(site=site)
+            self._site = mysite
         return self._site
 
     def title(self):
@@ -33,7 +36,7 @@ class LatestEntriesFeed(Feed):
 
     def item_description(self, item):
         """記事の説明."""
-        # 記事の説明フィールドがあればそれを、なければカテゴリとタグ名を
+        # 記事の説明フィールド
         return item.get_description()
 
     def item_link(self, item):
