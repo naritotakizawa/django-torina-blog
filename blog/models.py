@@ -151,7 +151,7 @@ class SiteDetail(models.Model):
     site = models.OneToOneField(Site, verbose_name='Site', on_delete=models.PROTECT)
     title = models.CharField('タイトル', max_length=255, default='サンプルのタイトル')
     header_text = models.TextField('ヘッダーのテキスト', max_length=255, default=DEFAULT_HEADER_TEXT)
-    description = models.CharField('サイトの説明', max_length=255, default='サンプルの説明')
+    description = models.TextField('サイトの説明', max_length=255, default='サンプルの説明')
     author = models.CharField('管理者', max_length=255, default='サンプルの管理者')
     author_mail = models.EmailField('管理者アドレス', max_length=255, default='your_mail@gmail.com')
     color = models.CharField('サイトテーマ色', choices=SITE_COLORS, default='primary', max_length=30)

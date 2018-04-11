@@ -1,6 +1,6 @@
-"""forms.py."""
 from django import forms
 from .models import Comment, ReComment
+from .fields import SimpleCaptchaField
 
 
 class PostSerachForm(forms.Form):
@@ -15,6 +15,10 @@ class PostSerachForm(forms.Form):
 
 class CommentCreateForm(forms.ModelForm):
     """コメント投稿フォーム"""
+
+    captha = SimpleCaptchaField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
 
     class Meta:
         model = Comment
