@@ -39,6 +39,11 @@ class CommentCreateForm(forms.ModelForm):
 class ReCommentCreateForm(forms.ModelForm):
     """返信コメント投稿フォーム"""
 
+    captha = SimpleCaptchaField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+
+
     class Meta:
         model = ReComment
         fields = ('name', 'text', 'icon')
