@@ -83,13 +83,13 @@ def img(text, index):
     if SPLIT_CHAR in text:
         src, alt = text.split(SPLIT_CHAR)
         tag = (
-            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-            'class="img-fluid" alt="{1}"></a>'
+            '<a href="{0}" target="_blank" rel="nofollow"><img data-original="{0}" '
+            'class="img-fluid lazy" alt="{1}"></a>'
         ).format(src, alt)
     else:
         tag = (
-            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-            'class="img-fluid"/></a>'
+            '<a href="{0}" target="_blank" rel="nofollow"><img data-original="{0}" '
+            'class="img-fluid lazy"/></a>'
         ).format(text)
     return tag
 
@@ -112,8 +112,8 @@ def imgpk(text, index):
         tag = '<img src="">'
     else:
         tag = (
-            '<a href="{0}" target="_blank" rel="nofollow"><img src="{0}" '
-            'class="img-fluid" alt="{1}"></a>'
+            '<a href="{0}" target="_blank" rel="nofollow"><img data-original="{0}" '
+            'class="img-fluid lazy" alt="{1}"></a>'
         ).format(src, alt)
     return tag
 

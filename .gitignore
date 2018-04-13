@@ -12,6 +12,7 @@ manage2.py
 Pipfile
 Pipfile.lock
 
+.idea/
 project/
 project2/
 media/
