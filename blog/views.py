@@ -106,9 +106,9 @@ class CommentCreateView(generic.CreateView):
     model = Comment
     form_class = CommentCreateForm
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         """記事のpkを保持"""
-        context = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(**kwargs)
         context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         return context
 
@@ -128,12 +128,12 @@ class ReCommentCreateView(generic.CreateView):
     form_class = ReCommentCreateForm
     template_name = 'blog/comment_form.html'
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         """記事のpkを保持"""
         comment_pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=comment_pk)
 
-        context = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(**kwargs)
         post_pk = comment.target.pk
         context['post'] = Post.objects.get(pk=post_pk)
         return context

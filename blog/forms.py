@@ -43,7 +43,6 @@ class ReCommentCreateForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control'}),
     )
 
-
     class Meta:
         model = ReComment
         fields = ('name', 'text', 'icon')

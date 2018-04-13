@@ -37,7 +37,6 @@ http://...<br>
 """
 
 import html
-import html.parser
 import re
 
 from django import template
@@ -47,7 +46,6 @@ from django.utils.safestring import mark_safe, SafeData
 from blog.models import Image
 
 register = template.Library()
-html_parser = html.parser.HTMLParser()
 SPLIT_CHAR = html.escape('<split>')
 
 
@@ -56,12 +54,12 @@ def url(text, index):
     text = text.replace('<br />', '')
     text = text.replace('[filter url]', '').replace('[end]', '')
     if SPLIT_CHAR in text:
-        url, text = text.split(SPLIT_CHAR)
+        href, text = text.split(SPLIT_CHAR)
         tag = '<a href="{0}" target="_blank" rel="nofollow">{1}</a>'.format(
-            url, text)
+            href, text)
     else:
-        url = text
-        tag = '<a href="{0}" target="_blank" rel="nofollow">{0}</a>'.format(url)
+        href = text
+        tag = '<a href="{0}" target="_blank" rel="nofollow">{0}</a>'.format(href)
     return tag
 
 
@@ -69,7 +67,7 @@ def html(text, index):
     """[filter html]your_html[end]を、そのままHTMLとして解釈する."""
     text = text.replace('<br />', '\n')
     text = text.replace('[filter html]', '').replace('[end]', '')
-    tag = html_parser.unescape(text)
+    tag = html.unescape(text)
     return tag
 
 
@@ -108,7 +106,7 @@ def imgpk(text, index):
 
     try:
         src = Image.objects.get(pk=int(pk)).src.url
-    except Exception:
+    except Image.DoesNotExist:
         tag = '<img src="">'
     else:
         tag = (
