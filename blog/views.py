@@ -16,8 +16,10 @@ class BaseListView(generic.ListView):
 
     def get_queryset(self):
         """公開フラグがTrue、作成日順の記事を返す."""
+        # post.categoryや、post.tag.allをテンプレートで書く場合は
+        # それぞれselect_relatedやprefetch_relatedで改善できる場合があります。
         queryset = Post.objects.filter(
-            is_publick=True).order_by('-created_at')
+            is_publick=True).order_by('-created_at').select_related('category').prefetch_related('tag')
         return queryset
 
 
@@ -45,7 +47,7 @@ class PostPrivateIndexView(LoginRequiredMixin, BaseListView):
     def get_queryset(self):
         """公開フラグがFalse、作成日順"""
         queryset = Post.objects.filter(
-            is_publick=False).order_by('-created_at')
+            is_publick=False).order_by('-created_at').select_related('category').prefetch_related('tag')
         return queryset
 
 

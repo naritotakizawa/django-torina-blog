@@ -70,7 +70,10 @@ class Post(models.Model):
             return description
 
     def get_next(self):
-        """次の記事を取得する(日付)"""
+        """次の記事を取得する(日付)
+
+        パフォーマンス的に、無駄が多い処理ですが、APIとして一応残しておきます。
+        """
         next_post = Post.objects.filter(
             is_publick=True, created_at__gt=self.created_at
         ).order_by('-created_at')
@@ -79,7 +82,10 @@ class Post(models.Model):
         return None
 
     def get_prev(self):
-        """前の記事を取得する(日付)"""
+        """前の記事を取得する(日付)
+
+        パフォーマンス的に、無駄が多い処理ですが、APIとして一応残しておきます。
+        """
         prev_post = Post.objects.filter(
             is_publick=True, created_at__lt=self.created_at
         ).order_by('-created_at')

@@ -39,19 +39,6 @@
   </div>
   
   <div class="card-footer">
-  
-    {% if post.get_prev %} 
-    <p>前の記事
-    <a href="{% url 'blog:detail' post.get_prev.pk %}">{{ post.get_prev.title }}</a>
-    </p>
-    {% endif %}
-  
-    {% if post.get_next %} 
-    <p>次の記事
-    <a href="{% url 'blog:detail' post.get_next.pk %}">{{ post.get_next.title }}</a>
-    </p>
-    {% endif %}
-  
     <p>添付ファイル</p>
     {% for file in post.file_set.all %}
        <p><a href="{{ file.src.url }}" download="{{ file.get_filename }}">{{ file.title }}</a></p>
