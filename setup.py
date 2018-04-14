@@ -18,7 +18,7 @@ URL = 'https://github.com/naritotakizawa/django-torina-blog'
 EMAIL = 'toritoritorina@gmail.com'
 AUTHOR = 'Narito Takizawa'
 REQUIRES_PYTHON = '>=3.5.0'
-VERSION = '2.1.2'
+VERSION = '3.0.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
