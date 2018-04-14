@@ -73,6 +73,6 @@ $(".blog-h2, .blog-h3").each(function(){
 
 // toc_htmlが空じゃなければ、目次として挿入
 if (toc_html){
-  toc_html = '<div class="card mb-1"><div class="card-body" id="toc"><p class="text-center font-weight-bold h4">目次</p><ul>' + toc_html + '</ul></div></div>'
+  toc_html = '<div class="card"><div class="card-body"><p class="text-center font-weight-bold h4">目次</p><ul>' + toc_html + '</ul></div></div>'
   $('#toc').html(toc_html);
 }

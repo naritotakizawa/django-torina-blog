@@ -48,3 +48,15 @@ body > footer a {
   color: blue;
   text-decoration: underline;
 }
+
+@media(min-width: 1700px){
+    #toc {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1030;
+        width:300px;
+        font-size:0.8rem;
+    }
+}
