@@ -22,7 +22,7 @@ class CommentCreateForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ('name', 'text', 'icon')
+        fields = ('name', 'text', 'icon', 'file')
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': "form-control",
@@ -31,6 +31,9 @@ class CommentCreateForm(forms.ModelForm):
                 'class': "form-control",
             }),
             'icon': forms.ClearableFileInput(attrs={
+                'class': "form-control-file",
+            }),
+            'file': forms.ClearableFileInput(attrs={
                 'class': "form-control-file",
             }),
         }
@@ -45,7 +48,7 @@ class ReCommentCreateForm(forms.ModelForm):
 
     class Meta:
         model = ReComment
-        fields = ('name', 'text', 'icon')
+        fields = ('name', 'text', 'icon', 'file')
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': "form-control",
@@ -54,6 +57,9 @@ class ReCommentCreateForm(forms.ModelForm):
                 'class': "form-control",
             }),
             'icon': forms.ClearableFileInput(attrs={
+                'class': "form-control-file",
+            }),
+            'file': forms.ClearableFileInput(attrs={
                 'class': "form-control-file",
             }),
         }

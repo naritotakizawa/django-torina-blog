@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sitemaps import ping_google
 from django.urls import reverse_lazy
 from django.db.models import Q, Count
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from .forms import PostSerachForm, CommentCreateForm, ReCommentCreateForm
@@ -172,3 +172,27 @@ def ping(request):
         raise
     else:
         return redirect('blog:index', permanent=True)
+
+
+def comment_file_download(request, pk):
+    """コメントに添付されたファイルのダウンロード
+
+    ユーザーがアップロードできるファイルなので、セキュリティ対策のため
+    必ずブラウザ上で開かせず、ダウンロードさせるようにする
+    """
+    comment = get_object_or_404(Comment, pk=pk)
+    response = HttpResponse(comment.file, content_type='application/octet-stream')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(comment.get_filename())
+    return response
+
+
+def recomment_file_download(request, pk):
+    """コメントに添付されたファイルのダウンロード
+
+     ユーザーがアップロードできるファイルなので、セキュリティ対策のため
+     必ずブラウザ上で開かせず、ダウンロードさせるようにする
+     """
+    recomment = get_object_or_404(ReComment, pk=pk)
+    response = HttpResponse(recomment.file, content_type='application/octet-stream')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(recomment.get_filename())
+    return response

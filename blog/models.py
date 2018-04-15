@@ -102,10 +102,15 @@ class Comment(models.Model):
         'サムネイル', upload_to='com_icon/', blank=True, null=True)
     target = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name='対象記事')
+    file = models.FileField('添付ファイル', upload_to='commend_uploads/%Y/%m/%d/', null=True, blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.text[:10]
+
+    def get_filename(self):
+        """ファイル名を取得する"""
+        return os.path.basename(self.file.url)
 
 
 class ReComment(models.Model):
@@ -116,10 +121,15 @@ class ReComment(models.Model):
         'サムネイル', upload_to='com_icon/', blank=True, null=True)
     target = models.ForeignKey(
         Comment, on_delete=models.CASCADE, verbose_name='対象コメント')
+    file = models.FileField('添付ファイル', upload_to='commend_uploads/%Y/%m/%d/', null=True, blank=True)
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.text[:10]
+
+    def get_filename(self):
+        """ファイル名を取得する"""
+        return os.path.basename(self.file.url)
 
 
 class Link(models.Model):
