@@ -31,10 +31,9 @@ urlpatterns = [
     path('tag/<str:tag>/', views.TagView.as_view(), name='tag'),
 
     path('comment/<int:pk>/', views.CommentCreateView.as_view(), name='comment'),
-    path('comment_file_download/<int:pk>/', views.comment_file_download, name='comment_file_download'),
-
     path('recomment/<int:pk>/', views.ReCommentCreateView.as_view(), name='recomment'),
-    path('recomment_file_download/<int:pk>/', views.recomment_file_download, name='recomment_file_download'),
+    path('file_download/<int:pk>/', views.file_download, name='file_download'),
+
 
     path('private/', views.PostPrivateIndexView.as_view(), name='private'),
 

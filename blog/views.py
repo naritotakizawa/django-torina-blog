@@ -6,8 +6,8 @@ from django.db.models import Q, Count
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
-from .forms import PostSerachForm, CommentCreateForm, ReCommentCreateForm
-from .models import Post, Comment, Tag, Category, ReComment
+from .forms import PostSerachForm, CommentCreateForm, ReCommentCreateForm, FileInlineFormSet
+from .models import Post, Comment, Tag, Category, ReComment, File
 
 
 class BaseListView(generic.ListView):
@@ -108,19 +108,24 @@ class CommentCreateView(generic.CreateView):
     model = Comment
     form_class = CommentCreateForm
 
-    def get_context_data(self, **kwargs):
-        """記事のpkを保持"""
-        context = super().get_context_data(**kwargs)
-        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
-        return context
-
     def form_valid(self, form):
         """記事をコメントのtargetに指定"""
+        comment = form.save(commit=False)
         post_pk = self.kwargs['pk']
-        self.object = form.save(commit=False)
-        self.object.target = Post.objects.get(pk=post_pk)
-        self.object.save()
+        comment.target = Post.objects.get(pk=post_pk)
+        comment.save()
+        formset = FileInlineFormSet(self.request.POST, instance=comment, files=self.request.FILES)
+        if formset.is_valid():
+            formset.save()
         return redirect('blog:detail', pk=post_pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
+        if 'formset' not in context:
+            context['formset'] = FileInlineFormSet(self.request.POST or None)
+        return context
+
 
 
 class ReCommentCreateView(generic.CreateView):
@@ -130,28 +135,27 @@ class ReCommentCreateView(generic.CreateView):
     form_class = ReCommentCreateForm
     template_name = 'blog/comment_form.html'
 
-    def get_context_data(self, **kwargs):
-        """記事のpkを保持"""
-        comment_pk = self.kwargs['pk']
-        comment = Comment.objects.get(pk=comment_pk)
-
-        context = super().get_context_data(**kwargs)
-        post_pk = comment.target.pk
-        context['post'] = Post.objects.get(pk=post_pk)
-        return context
-
     def form_valid(self, form):
-        """元コメントを返信コメントのtargetに指定"""
+        """記事をコメントのtargetに指定"""
         comment_pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=comment_pk)
+        recomment = form.save(commit=False)
+        recomment.target = comment
+        recomment.save()
 
-        # 紐づくコメントを設定する
-        self.object = form.save(commit=False)
-        self.object.target = comment
-        self.object.save()
-
-        # 記事詳細にリダイレクト
+        formset = FileInlineFormSet(self.request.POST, instance=recomment, files=self.request.FILES)
+        if formset.is_valid():
+            formset.save()
         return redirect('blog:detail', pk=comment.target.pk)
+
+    def get_context_data(self, **kwargs):
+        comment_pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=comment_pk)
+        context = super().get_context_data(**kwargs)
+        context['post'] = comment.target
+        if 'formset' not in context:
+            context['formset'] = FileInlineFormSet(self.request.POST or None)
+        return context
 
 
 class TagListView(generic.ListView):
@@ -174,25 +178,13 @@ def ping(request):
         return redirect('blog:index', permanent=True)
 
 
-def comment_file_download(request, pk):
+def file_download(request, pk):
     """コメントに添付されたファイルのダウンロード
 
     ユーザーがアップロードできるファイルなので、セキュリティ対策のため
     必ずブラウザ上で開かせず、ダウンロードさせるようにする
     """
-    comment = get_object_or_404(Comment, pk=pk)
-    response = HttpResponse(comment.file, content_type='application/octet-stream')
-    response['Content-Disposition'] = 'attachment; filename="{}"'.format(comment.get_filename())
-    return response
-
-
-def recomment_file_download(request, pk):
-    """コメントに添付されたファイルのダウンロード
-
-     ユーザーがアップロードできるファイルなので、セキュリティ対策のため
-     必ずブラウザ上で開かせず、ダウンロードさせるようにする
-     """
-    recomment = get_object_or_404(ReComment, pk=pk)
-    response = HttpResponse(recomment.file, content_type='application/octet-stream')
-    response['Content-Disposition'] = 'attachment; filename="{}"'.format(recomment.get_filename())
+    file = get_object_or_404(File, pk=pk)
+    response = HttpResponse(file.src, content_type='application/octet-stream')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(file.get_filename())
     return response

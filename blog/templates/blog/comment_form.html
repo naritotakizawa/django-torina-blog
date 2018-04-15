@@ -24,7 +24,21 @@
       <label for="{{ field.id_for_label }}">{{ field.label }}</label>
       {{ field }}
     </div>
-  {% endfor %}
+  {% endfor %}<!-- コメント部分のフォーム終わり -->
+
+  {{ formset.management_form }}
+  {% for form in formset %}
+    {{ form.id }}
+    {{ form.non_field_errors }}
+    {% for field in form.visible_fields %}
+      <div class="form-group">
+        {{ field.errors }}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      </div>
+    {% endfor %}<!-- 1つのファイルフォーム終わり -->
+
+  {% endfor %}<!-- formset終了 -->
   {% csrf_token %}
   <button class="btn btn-{{ mysite.color }}" type="submit">コメントする</button>
   <a class="btn btn-{{ mysite.color }}" href="{% url 'blog:detail' post.pk %}" rel="nofollow">戻る</a>

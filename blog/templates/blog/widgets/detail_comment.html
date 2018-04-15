@@ -15,9 +15,9 @@
         <span class="badge badge-{{ mysite.color }} badge-pill">{{ comment.created_at }}</span>
         <a href="{% url 'blog:recomment' comment.pk %}">返信する</a>
       </h5>
-      {% if comment.file %}
-        <a href="{% url 'blog:comment_file_download' comment.pk %}">添付ファイルダウンロード({{ comment.get_filename }})</a><br>
-      {% endif %}
+      {% for file in comment.files.all %}
+        <a href="{% url 'blog:file_download' file.pk %}">添付ファイルダウンロード({{ file.get_filename }})</a><br>
+      {% endfor %}
       {{ comment.text | linebreaksbr }}
       <!-- 返信コメント -->
       {% for recomment in comment.recomment_set.all %}
@@ -35,9 +35,9 @@
                 <span class="badge badge-{{ mysite.color }} badge-pill">{% by_the_time recomment.created_at %}</span>
                 <span class="badge badge-{{ mysite.color }} badge-pill">{{ recomment.created_at }}</span>
               </h5>
-              {% if recomment.file %}
-                <a href="{% url 'blog:recomment_file_download' recomment.pk %}">添付ファイルダウンロード({{ recomment.get_filename }})</a><br>
-              {% endif %}
+              {% for file in recomment.files.all %}
+                <a href="{% url 'blog:file_download' file.pk %}">添付ファイルダウンロード({{ file.get_filename }})</a><br>
+              {% endfor %}
               {{ recomment.text | linebreaksbr }}
         
           </div>

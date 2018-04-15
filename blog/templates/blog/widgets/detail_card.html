@@ -40,8 +40,8 @@
   
   <div class="card-footer">
     <p>添付ファイル</p>
-    {% for file in post.file_set.all %}
-       <p><a href="{{ file.src.url }}" download="{{ file.get_filename }}">{{ file.title }}</a></p>
+    {% for file in post.files.all %}
+      <a href="{% url 'blog:file_download' file.pk %}">{{ file.title }} - {{ file.get_filename }}</a><br>
     {% endfor %}
   
     <p>関連記事</p>
