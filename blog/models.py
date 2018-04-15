@@ -26,7 +26,6 @@ DEFAULT_HEADER_TEXT = """\
 class Category(models.Model):
     """カテゴリー"""
     name = models.CharField('カテゴリ名', max_length=255)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         """str."""
@@ -36,7 +35,6 @@ class Category(models.Model):
 class Tag(models.Model):
     """タグ"""
     name = models.CharField('タグ名', max_length=255)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         """str."""
@@ -51,7 +49,7 @@ class Post(models.Model):
         Category, verbose_name='カテゴリ', on_delete=models.PROTECT)
     tag = models.ManyToManyField(Tag, blank=True, verbose_name='タグ')
     thumnail = models.ImageField(
-        'サムネイル', upload_to='uploads/%Y/%m/%d/', blank=True, null=True)
+        'サムネイル', upload_to='post_thumbnail/%Y/%m/%d/', blank=True, null=True)
     is_publick = models.BooleanField('公開可能か?', default=True)
     friend_posts = models.ManyToManyField(
         'self', verbose_name='関連記事', blank=True)
@@ -102,7 +100,7 @@ class Comment(models.Model):
     name = models.CharField('名前', max_length=255, default='名無し')
     text = models.TextField('コメント')
     icon = models.ImageField(
-        'サムネイル', upload_to='com_icon/', blank=True, null=True)
+        'サムネイル', upload_to='comment_thumbnail/%Y/%m/%d/', blank=True, null=True)
     target = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name='対象記事')
     files = GenericRelation('File')
@@ -121,7 +119,7 @@ class ReComment(models.Model):
     name = models.CharField('名前', max_length=255, default='名無し')
     text = models.TextField('コメント')
     icon = models.ImageField(
-        'サムネイル', upload_to='com_icon/', blank=True, null=True)
+        'サムネイル', upload_to='recomment_thumbnail/%Y/%m/%d//', blank=True, null=True)
     target = models.ForeignKey(
         Comment, on_delete=models.CASCADE, verbose_name='対象コメント')
     files = GenericRelation('File')
@@ -139,7 +137,6 @@ class Link(models.Model):
     """リンク"""
     name = models.CharField('リンク名', max_length=255)
     adrs = models.CharField('アドレス', max_length=255)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -149,7 +146,6 @@ class Analytics(models.Model):
     """アナリティクスの情報"""
     name = models.CharField('アナリティクス', max_length=255, blank=True)
     html = models.TextField('アナリティクスHTML', blank=True)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -159,7 +155,6 @@ class Ads(models.Model):
     """広告関連"""
     name = models.CharField('広告名', max_length=255, blank=True)
     html = models.TextField('広告HTML', blank=True)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -174,7 +169,6 @@ class SiteDetail(models.Model):
     author = models.CharField('管理者', max_length=255, default='サンプルの管理者')
     author_mail = models.EmailField('管理者アドレス', max_length=255, default='your_mail@gmail.com')
     color = models.CharField('サイトテーマ色', choices=SITE_COLORS, default='primary', max_length=30)
-    created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
         return self.author
@@ -196,7 +190,7 @@ class Image(models.Model):
     post = models.ForeignKey(
         Post, verbose_name='記事', on_delete=models.PROTECT,
     )
-    src = models.ImageField('画像', upload_to='uploads/%Y/%m/%d/', help_text='送信後、一度保存してください。')
+    src = models.ImageField('画像', upload_to='images/%Y/%m/%d/', help_text='送信後、一度保存してください。')
     created_at = models.DateTimeField('作成日', default=timezone.now)
 
     def __str__(self):
@@ -204,9 +198,9 @@ class Image(models.Model):
 
 
 class File(models.Model):
-    """記事やファイルに紐づく添付ファイル"""
+    """記事やコメントに紐づく添付ファイル"""
     title = models.CharField('タイトル', max_length=255, blank=True)
-    src = models.FileField('添付ファイル', upload_to='uploads/%Y/%m/%d/')
+    src = models.FileField('添付ファイル', upload_to='files/%Y/%m/%d/')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
