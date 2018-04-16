@@ -105,14 +105,15 @@ def imgpk(text, index):
         pk, alt = text, ''
 
     try:
-        src = Image.objects.get(pk=int(pk)).src.url
+        image = Image.objects.get(pk=int(pk))
     except Image.DoesNotExist:
         tag = '<img src="">'
     else:
+        src = image.src.url
         tag = (
             '<a href="{0}" target="_blank" rel="nofollow"><img data-original="{0}" '
             'class="img-fluid lazy" alt="{1}"></a>'
-        ).format(src, alt)
+        ).format(src, image.title or alt)
     return tag
 
 

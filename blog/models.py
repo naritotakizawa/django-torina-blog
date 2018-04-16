@@ -187,6 +187,7 @@ class PopularPost(models.Model):
 
 class Image(models.Model):
     """記事に紐づく画像ファイル"""
+    title = models.CharField('タイトル', max_length=255, blank=True)
     post = models.ForeignKey(
         Post, verbose_name='記事', on_delete=models.PROTECT,
     )
