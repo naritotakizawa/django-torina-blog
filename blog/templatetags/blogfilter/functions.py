@@ -136,7 +136,7 @@ def h2(text):
     global h2_count, h3_count
     h2_count += 1
     h3_count = 0
-    index = 'i{}-{}'.format(h2_count, h3_count)
+    index = 'i{}'.format(h2_count)
     text = text.replace('[filter h2]', '').replace('[end]', '')
     tag = '<h2 class="blog-h2" id="{}">{}</h2>'.format(index, text)
     return tag

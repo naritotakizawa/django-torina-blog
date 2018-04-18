@@ -31,11 +31,7 @@ class CategorySitemap(Sitemap):
 
     def items(self):
         """カテゴリ一覧データ."""
-        return Category.objects.all().order_by('-created_at')
-
-    def lastmod(self, obj):
-        """更新日."""
-        return obj.created_at
+        return Category.objects.order_by('-pk')
 
     def location(self, obj):
         """url."""
@@ -50,11 +46,7 @@ class TagSitemap(Sitemap):
 
     def items(self):
         """タグ一覧データ."""
-        return Tag.objects.all().order_by('-created_at')
-
-    def lastmod(self, obj):
-        """更新日."""
-        return obj.created_at
+        return Tag.objects.all().order_by('-pk')
 
     def location(self, obj):
         """url."""
