@@ -36,7 +36,7 @@ http://...<br>
 [filter h2]や[filter h3]、[filter quote]など、内部に<br />があってもおかしくない場合は、<br />をそのままにしています。
 """
 
-import html
+import html as ht
 import re
 
 from django import template
@@ -46,7 +46,7 @@ from django.utils.safestring import mark_safe, SafeData
 from blog.models import Image
 
 register = template.Library()
-SPLIT_CHAR = html.escape('<split>')
+SPLIT_CHAR = ht.escape('<split>')
 
 
 def url(text, index):
@@ -67,7 +67,7 @@ def html(text, index):
     """[filter html]your_html[end]を、そのままHTMLとして解釈する."""
     text = text.replace('<br />', '\n')
     text = text.replace('[filter html]', '').replace('[end]', '')
-    tag = html.unescape(text)
+    tag = ht.unescape(text)
     return tag
 
 
