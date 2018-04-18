@@ -113,7 +113,7 @@ def imgpk(text, index):
         tag = (
             '<a href="{0}" target="_blank" rel="nofollow"><img data-original="{0}" '
             'class="img-fluid lazy" alt="{1}"></a>'
-        ).format(src, image.title or alt)
+        ).format(src, alt or image.title)  # <split>があればそれ優先、なければImageのタイトル属性
     return tag
 
 

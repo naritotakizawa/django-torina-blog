@@ -21,9 +21,17 @@ Requirement
 
 Quick start
 -----------
-1. インストールする::
+1. インストールする。現状PyPIにはありません。::
 
+    # 安定版
     pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/master.tar.gz
+
+    # 特定タグ
+    pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/5.0.0.tar.gz
+
+    # 開発版
+    pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/develop.tar.gz
+
 
 2. settings.pyにINSTALLED_APPS、SITE_ID、TEMPLATESのcontext_processors、MEDIA_URL、MEDIA_ROOT等の追加::
 
