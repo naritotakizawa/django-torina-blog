@@ -7,8 +7,8 @@ from .models import Post, Category, Tag
 class PostSitemap(Sitemap):
     """記事のサイトマップ."""
 
-    changefreq = 'never'
-    priority = 0.5
+    changefreq = 'weekly'
+    priority = 1.0
 
     def items(self):
         """記事一覧データ."""
@@ -26,7 +26,7 @@ class PostSitemap(Sitemap):
 class CategorySitemap(Sitemap):
     """カテゴリのサイトマップ."""
 
-    changefreq = 'never'
+    changefreq = 'monthly'
     priority = 0.5
 
     def items(self):
@@ -41,7 +41,7 @@ class CategorySitemap(Sitemap):
 class TagSitemap(Sitemap):
     """タグのサイトマップ."""
 
-    changefreq = 'never'
+    changefreq = 'monthly'
     priority = 0.5
 
     def items(self):
@@ -56,8 +56,8 @@ class TagSitemap(Sitemap):
 class StaticSitemap(Sitemap):
     """静的なサイトマップ."""
 
-    changefreq = 'never'
-    priority = 0.5
+    changefreq = 'weekly'
+    priority = 0.8
 
     def items(self):
         """静的ページの一覧."""
