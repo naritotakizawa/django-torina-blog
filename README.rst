@@ -26,10 +26,7 @@ Quick start
     # 安定版
     pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/master.tar.gz
 
-    # 特定タグ
-    pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/5.0.0.tar.gz
-
-    # 開発版
+    # 開発版。ある程度の期間https://torina.topで使って問題がなければ、masterにマージされます。
     pip install -U https://github.com/naritotakizawa/django-torina-blog/archive/develop.tar.gz
 
 
