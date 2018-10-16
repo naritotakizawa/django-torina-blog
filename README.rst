@@ -14,7 +14,7 @@ django-torina-blog
 
 お知らせ
 --------
-`新しいブログ<https://github.com/naritotakizawa/naritoblog/>`_ができました。こちらのほうが洗練されています。
+`新しいブログ　<https://github.com/naritotakizawa/naritoblog/>`_　ができました。こちらのほうが洗練されています。
 
 Requirement
 --------------
