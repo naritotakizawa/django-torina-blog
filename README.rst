@@ -9,9 +9,6 @@ django-torina-blog
 
 ブログ用のDjangoアプリケーションです。
 
-`実際に使っているブログ <https://torina.top>`_
-`ちょっとした紹介 <https://torina.top/detail/447/>`_
-
 お知らせ
 --------
 `新しいブログ <https://github.com/naritotakizawa/naritoblog/>`_ ができました。こちらのほうが洗練されています。
