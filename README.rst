@@ -93,8 +93,6 @@ Quick start
 
 過去1週間の人気記事を取得する場合(Google Analytics)
 ----------------------------------------------------------
-`参考1 <https://torina.top/detail/357/>`_
-`参考2 <https://torina.top/detail/355/>`_
 
 1. インストールする::
 
